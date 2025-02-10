@@ -6,7 +6,7 @@ export default function App() {
   const authToken=true;
   return (
     <div >
-      <Home authToken={authToken}/>
+      <Home authToken={authToken} />
     </div>
   )
 }
