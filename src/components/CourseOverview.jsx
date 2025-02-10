@@ -21,6 +21,7 @@ const CourseOverview = () => {
     
       return (
         <div className="container mx-auto py-8">
+          <h3 className="font-sans text-2xl">Course Overview</h3>
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center">
               <button className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded mr-2">

@@ -104,7 +104,7 @@ const Header=({isLoggedIn})=>{
                          </li>
                         ):(
                             <li>
-                                <a href='/login' className="hover:text-gray-300">Login</a>
+                                <Link to="/LoginPage" className="hover:text-gray-300">Login</Link>
                             </li>
                         )}
                         

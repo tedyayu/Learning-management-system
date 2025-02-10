@@ -1,10 +1,18 @@
 import  { useState } from 'react'
 
 const Courses = () => {
-    const [expanded, setExpanded] = useState({
+        const [expanded, setExpanded] = useState({
         underGraduate: true,
         postGraduate:true
       });
+      const [searchTerm,setSearchTerm]=useState('');
+
+      const handleInputChange = (event) => {
+        setSearchTerm(event.target.value);
+      };
+      const handleSearch = () => {
+        console.log('Searching for:', searchTerm);
+      };
 
       const toggleExpand = (group) => {
         setExpanded((prev) => ({ ...prev, [group]: !prev[group] }));
@@ -79,7 +87,28 @@ const Courses = () => {
                 </ul>
                 )}
             </div>
-            
+            <div className="mb-4">
+                <label htmlFor="courseSearch" className="block text-sm font-medium text-gray-700">
+                    Search courses
+                </label>
+                <div className="flex"> {/* Flexbox for horizontal alignment */}
+                    <input
+                    type="text"
+                    id="courseSearch"
+                    placeholder="Enter course name"
+                    value={searchTerm}
+                    onChange={handleInputChange}
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline flex-grow mr-2" // Tailwind classes
+                    />
+                    <button
+                    onClick={handleSearch}
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" // Tailwind classes
+                    >
+                    Go
+                    </button>
+                    <span className="ml-2 text-blue-500 cursor-pointer">?</span> {/* Tailwind classes */}
+                </div>
+            </div>
         </div>
     </div>
   )
