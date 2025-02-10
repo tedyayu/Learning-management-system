@@ -9,7 +9,7 @@ import CourseCategory from '../components/CourseCategory'
 import CourseOverview from '../components/CourseOverview'
 import Footer from '../components/Footer'
 
-const Home = () => {
+const Home = ({authToken}) => {
   /*
   const [authToken,setAuthToken]=useState(null);
   useEffect(() => {
@@ -19,7 +19,7 @@ const Home = () => {
     }
   }, []);
   */
- const authToken=true;
+ 
 
   return (
     <div className="h-screen flex flex-col">
