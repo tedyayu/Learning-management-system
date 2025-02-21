@@ -1,7 +1,9 @@
 import {useState, useRef, useEffect} from 'react';
-import {Link} from 'react-router-dom';
+import {Link , useNavigate} from 'react-router-dom';
 
-const Header=({isLoggedIn})=>{
+
+const Header=({isLoggedIn,user,setAuthToken})=>{
+    const navigate=useNavigate();
 
     const [showLinks,setShowLinks]=useState(false)
     const [showUserDropdown, setShowUserDropdown] = useState(false);
@@ -29,16 +31,12 @@ const Header=({isLoggedIn})=>{
         setShowUserDropdown(false);
     };
 
-    const toggleUserDropdown=(event)=>{
-        event.stopPropagation(); 
+    const toggleUserDropdown=()=>{
         setShowUserDropdown(!showUserDropdown);
         setShowLinks(false);
     }
 
-    const user = {
-        name: "Tewodros Ayehualem",
-        profilePicture: "../../image.jpg" // Path to user's profile picture
-    }; 
+ 
     const usefulLinks = [
         { href: 'https://nadle.gov.et/', text: 'Ethiopian National Library (NADLE)' },
         { href: '/amu-research-database', text: 'AMU Research Database Systems' },
@@ -49,6 +47,16 @@ const Header=({isLoggedIn})=>{
         { href: '/intranet', text: 'Intranet' },
         { href: '/amu-email', text: 'AMU Email' }, 
     ];
+
+    const handleLogout=()=>{
+        console.log("Logging out...");
+        localStorage.removeItem("authToken");
+        setAuthToken(null);
+        console.log("Auth token removed:", localStorage.getItem("authToken"));
+        setShowUserDropdown(false);
+        //window.location.reload();
+        navigate('/')
+        };
 
     return(
         <header className="bg-gray-800 text-white py-4">
@@ -81,21 +89,28 @@ const Header=({isLoggedIn})=>{
                         </li>
                         {isLoggedIn ? (
                              <li className="relative"> {/* User profile dropdown */}
-                             <div className="flex items-center cursor-pointer" onClick={toggleLinks}>
-                                 <img src={user.profilePicture} alt="Profile" className="h-8 w-8 rounded-full mr-2" />
-                                 <span>{user.name}</span>
+                             <div className="flex items-center cursor-pointer" onClick={toggleUserDropdown}>
+                                 <img src="no src" alt="Profile" className="h-8 w-8 rounded-full mr-2" />
+                                 <span>{user.fullName}</span>
                                  <span className="cursor-pointer flex items-center" 
                                 onClick={toggleUserDropdown}>▼</span> {/* Dropdown arrow */}
                              
-                             {showUserDropdown && ( // Show dropdown if showLinks is true
+                             {showUserDropdown && ( 
                                  <ul className="absolute top-full right-0 bg-white text-gray-800 rounded-md shadow-lg py-2 w-48 z-50">
                                      <li className='px-4 py-2 hover:bg-gray-100'>
-                                         <Link to="/profile">Profile</Link> </li>
+                                         <Link to="/ProfilePage">Profile</Link> 
+                                    </li>
                                      <li className='px-4 py-2 hover:bg-gray-100'>
-                                         <button onClick={() => {
-                                            localStorage.removeItem("authToken");
-                                            window.location.reload();
-                                        }}>Logout</button> {/* Logout button */}
+                                         <Link to="/Overview">Grades</Link>
+                                     </li>
+                                     <li className='px-4 py-2 hover:bg-gray-100'>
+                                         <Link to="/message">Messages</Link>
+                                     </li>
+                                     <li className='px-4 py-2 hover:bg-gray-100'>
+                                         <Link to="prefernces">Preferences</Link>
+                                     </li>
+                                     <li className='px-4 py-2 hover:bg-gray-100'>
+                                         <button onClick={ handleLogout}>Logout</button>
                                      </li>
                                  </ul>
                                  

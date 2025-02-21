@@ -6,19 +6,19 @@ const Announcement = () => {
           date: "7 Jun, 18:07",
           author: "Neway Tadesse",
           text: "e-Learning for Strengthening Higher Education (e-SHE)",
-          link: "#" // Replace with actual link
+          link: "#" 
         },
         {
           date: "11 Aug, 17:03",
           author: "E-learning Site Administrator",
           text: "Reset your Office365 password using your phone and recovery email",
-          link: "#" // Replace with actual link
+          link: "#" 
         },
         {
           date: "7 Jun, 22:33",
           author: "E-learning Site Administrator",
           text: "Office 365 new users guide: set up your new account",
-          link: "#" // Replace with actual link
+          link: "#" 
         }
       ];
 

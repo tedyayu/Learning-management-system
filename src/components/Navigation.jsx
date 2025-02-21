@@ -1,4 +1,5 @@
 import {useState} from 'react'
+import {Link , useNavigate} from 'react-router-dom';
 
 
 const Navigation = ({isLoggedIn}) => {
@@ -10,15 +11,16 @@ const Navigation = ({isLoggedIn}) => {
     })
     const courses= [
         { id: 1, name: 'Introduction to React', instructor: 'John Doe', details: {
-            badges: true,  competencies: false, grades: true, 
+            badges: true,  competencies: false, grades: 85, 
           }},
         { id: 2, name: 'Advanced JavaScript', instructor: 'Jane Smith' ,details: {
-            badges: true,  competencies: false, grades: true, 
+            badges: true,  competencies: false, grades: 43, 
           }},
         { id: 3, name: 'Web Development with Node.js', instructor: 'David Lee',details: {
-            badges: true,  competencies: false, grades: true, 
+            badges: true,  competencies: false, grades: 78, 
           }},
       ];
+      console.log(courses)
 
     const toggleExpand=(item)=>{
         setIsExpanded((prev)=>({...prev, [item]:!prev[item]}))
@@ -69,8 +71,10 @@ const Navigation = ({isLoggedIn}) => {
                                     </button>
                                     {isExpanded.courseDetails && (
                                         <ul className="mt-2 ml-4">
+                                            
+                                            <li className="p-2 bg-gray-200 rounded hover:bg-gray-300"><Link to="/GradesPage" state={{ course: course }}>Grades</Link></li>
+                                            <li className="p-2 bg-gray-200 rounded hover:bg-gray-300">Compitencies</li>
                                             <li className="p-2 bg-gray-200 rounded hover:bg-gray-300">Bagages</li>
-                                            <li className="p-2 bg-gray-200 rounded hover:bg-gray-300">Grades</li>
                                         </ul>
                                     )}
                                 </li>
