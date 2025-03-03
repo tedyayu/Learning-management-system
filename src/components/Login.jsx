@@ -55,7 +55,7 @@ const Login = () => {
                         navigate("/")
                     }
                 } catch (error) {
-                    console.error("login error", error);
+                    console.error("login error", error.message);
                     setError("An unexpected error occurred. Please try again.");
                 }
     };

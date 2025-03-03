@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { PencilIcon, TrashIcon } from "lucide-react";
-import {registerUser} from '../../utils/api'
+import {registerInstractor} from '../../utils/api'
 
 
-export default function UserManagement() { 
+export default function RegisterInstarctorPage() { 
  
   const [users, setUsers] = useState([]);
   const [editingUser, setEditingUser] = useState(null);
-  const [newUser, setNewUser] = useState({ username: "", password: "",ID_NO:"", role: "student" });
+  const [newUser, setNewUser] = useState({ username: "", password: "",ID_NO:""});
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchRole, setSearchRole] = useState("student");
+  //const [searchRole, setSearchRole] = useState("student");
   const [searchResults, setSearchResults] = useState([]);
   const [error, setError] = useState("");
 
@@ -21,16 +21,16 @@ export default function UserManagement() {
     try {
       
       console.log("Sending request:", newUser);
-      const response = await registerUser(newUser)
+      const response = await registerInstractor(newUser)
 
       
       if(response.error){
         setError(response.error.message);
         console.error("response error", response.error)
       }else{
-        alert("new user added")
+        alert("new Instractor added")
         setUsers([...users, { ...newUser, id: users.length + 1 }]);
-        setNewUser({ username: "", password: "",ID_NO:"", role: "student" });
+        setNewUser({ username: "", password: "",ID_NO:""});
       }
 
     } catch (error) {
@@ -53,28 +53,19 @@ export default function UserManagement() {
 
   const handleSearch = () => {
     const filteredUsers = users.filter(
-      user => user.role === searchRole && user.username.includes(searchQuery)
+      user => user.username.includes(searchQuery)
     );
     setSearchResults(filteredUsers);
   };
   
-  const students = users.filter(user => user.role === "student");
-  const instructors = users.filter(user => user.role === "instructor");
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">User Management</h1>
+      <h1 className="text-2xl font-bold mb-4">Register Instractor</h1>
       <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        <h2 className="text-xl font-semibold mb-4">Search Users</h2>
+        <h2 className="text-xl font-semibold mb-4">Search Instractor</h2>
         <div className="flex gap-4 mb-4">
-          <select
-            className="shadow border rounded py-2 px-3 text-gray-700"
-            value={searchRole}
-            onChange={e => setSearchRole(e.target.value)}
-          >
-            <option value="student">Student</option>
-            <option value="instructor">Instructor</option>
-          </select>
+          
           <input
             className="shadow border rounded py-2 px-3 text-gray-700"
             type="text"
@@ -101,7 +92,7 @@ export default function UserManagement() {
                   <thead>
                     <tr>
                       
-                      <th className="px-4 py-2 border">Username</th>
+                      <th className="px-4 py-2 border">Instractor Name</th>
                       <th className="px-4 py-2 border">password</th>
                       <th className="px-4 py-2 border">Id No</th>
                       <th className="px-4 py-2 border">Actions</th>
@@ -135,7 +126,7 @@ export default function UserManagement() {
       {/* Add/Edit User Form */}
       <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
       onSubmit={editingUser ? updateUser : addUser}>
-        <h2 className="text-xl font-semibold mb-4">{editingUser ? "Edit User" : "Add New User"}</h2>
+        <h2 className="text-xl font-semibold mb-4">{editingUser ? "Edit User" : "Add New Instractor"}</h2>
         <h1 className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">{error}</h1>
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">Username</label>
@@ -178,28 +169,14 @@ export default function UserManagement() {
             }
           required/>
         </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">Role</label>
-          <select
-            className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight"
-            value={editingUser ? editingUser.role : newUser.role}
-            onChange={e =>
-              editingUser
-                ? setEditingUser({ ...editingUser, role: e.target.value })
-                : setNewUser({ ...newUser, role: e.target.value })
-            }
-          >
-            <option value="student">Student</option>
-            <option value="instructor">Instructor</option>
-          </select>
-        </div>
+        
         <div className="flex items-center justify-between">
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             onClick={editingUser ? updateUser : addUser}
             type="submit"
           >
-            {editingUser ? "Update User" : "Add User"}
+            {editingUser ? "Update Instractor Information" : "Add New Instractor"}
           </button>
           {editingUser && (
             <button
@@ -213,48 +190,12 @@ export default function UserManagement() {
         </div>
       </form>
 
-      {/* Student List */}
-      <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-6">
-        <h2 className="text-xl font-semibold mb-4">Students 📚</h2>
-        {students.length > 0 ? (
-          <table className="min-w-full border">
-            <thead>
-              <tr>
-                
-                <th className="px-4 py-2 border">Username</th>
-                <th className="px-4 py-2 border">password</th>
-                <th className="px-4 py-2 border">Id No</th>
-                <th className="px-4 py-2 border">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {students.map(user => (
-                <tr key={user.id}>
-                  
-                  <td className="border px-4 py-2">{user.username}</td>
-                  <td className="border px-4 py-2">{user.password}</td>
-                  <td className="border px-4 py-2">{user.ID_NO}</td>
-                  <td className="border px-4 py-2">
-                    <button className="text-blue-500 hover:text-blue-700 mr-2" onClick={() => setEditingUser(user)}>
-                      <PencilIcon className="h-5 w-5" />
-                    </button>
-                    <button className="text-red-500 hover:text-red-700" onClick={() => deleteUser(user.id)}>
-                      <TrashIcon className="h-5 w-5" />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        ) : (
-          <p>No students added yet.</p>
-        )}
-      </div>
+      
 
       {/* Instructor List */}
       <div className="bg-white shadow-md rounded px-8 pt-6 pb-8">
         <h2 className="text-xl font-semibold mb-4">Instructors 🎓</h2>
-        {instructors.length > 0 ? (
+        {users.length > 0 ? (
           <table className="min-w-full border">
             <thead>
               <tr>
@@ -265,7 +206,7 @@ export default function UserManagement() {
               </tr>
             </thead>
             <tbody>
-              {instructors.map(user => (
+              {users.map(user => (
                 <tr key={user.id}>
                   <td className="border px-4 py-2">{user.username}</td>
                   <td className="border px-4 py-2">{user.password}</td>

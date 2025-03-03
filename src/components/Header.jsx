@@ -68,6 +68,7 @@ const Header=({isLoggedIn,user,setAuthToken})=>{
                 <nav>
                     <ul className="flex space-x-6">
                         <li ><Link to="/">Home</Link></li>
+                        <li><Link to="/InstractorDashboard">Instractor Dashboard</Link></li>
                         <li className="relative">
                             <span className="cursor-pointer flex items-center" 
                                 onClick={toggleLinks}
@@ -91,7 +92,7 @@ const Header=({isLoggedIn,user,setAuthToken})=>{
                              <li className="relative"> {/* User profile dropdown */}
                              <div className="flex items-center cursor-pointer" onClick={toggleUserDropdown}>
                                  <img src="no src" alt="Profile" className="h-8 w-8 rounded-full mr-2" />
-                                 <span>{user.fullName}</span>
+                                 <span>{user.firstName}</span>
                                  <span className="cursor-pointer flex items-center" 
                                 onClick={toggleUserDropdown}>▼</span> {/* Dropdown arrow */}
                              
@@ -107,13 +108,14 @@ const Header=({isLoggedIn,user,setAuthToken})=>{
                                          <Link to="/message">Messages</Link>
                                      </li>
                                      <li className='px-4 py-2 hover:bg-gray-100'>
-                                         <Link to="prefernces">Preferences</Link>
+                                         <Link to="/prefernces">Preferences</Link>
                                      </li>
+                                                
                                      <li className='px-4 py-2 hover:bg-gray-100'>
                                          <button onClick={ handleLogout}>Logout</button>
                                      </li>
                                  </ul>
-                                 
+                                
                              )}
                              </div>
                          </li>

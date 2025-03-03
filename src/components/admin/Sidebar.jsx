@@ -1,7 +1,8 @@
 import { FaUsers, FaBook, FaFileAlt, FaUserShield, FaCog, FaChartBar, FaCommentsDollar, FaBroadcastTower, FaLock, FaBell } from "react-icons/fa";
 
 const menuItems = [
-  { name: "User Management", icon: <FaUsers /> },
+  { name: "Register Student", icon: <FaUsers /> },
+  { name: "Register Instractor", icon: <FaUsers /> },
   { name: "Course Management", icon: <FaBook /> },
   { name: "Content Management", icon: <FaFileAlt /> },
   { name: "Enrollment & Access", icon: <FaUserShield /> },

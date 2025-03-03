@@ -1,18 +1,21 @@
 import { useState } from "react";
-import Sidebar from "../components/admin/Sidebar";
-import UserManagement from "../components/admin/UserManagment";
-import CourseManagement from "../components/admin/CourseManagement";
-import ContentManagement from "../components/admin/ContentManagement";
+import Sidebar from "../../components/admin/Sidebar";
+import RegisterStudent from "./RegisterStudent";
+import RegisterInstarctorPage from "./RegisterInstractorPage"
+import CourseManagement from "../../components/admin/CourseManagement";
+import ContentManagement from "../../components/admin/ContentManagement";
 
 export default function AdminDashboard() {
-  const [activeMenu, setActiveMenu] = useState("User Management");
+  const [activeMenu, setActiveMenu] = useState("Register Student");
 
   const renderContent = () => {
     switch (activeMenu) {
-      case "User Management":
-        return <UserManagement />;
+      case "Register Student":
+        return <RegisterStudent />;
       case "Course Management":
         return <CourseManagement />;
+        case "Register Instractor":
+        return <RegisterInstarctorPage />;
       case "Content Management":
         return <ContentManagement />;
       default:
@@ -27,3 +30,5 @@ export default function AdminDashboard() {
     </div>
   );
 }
+
+

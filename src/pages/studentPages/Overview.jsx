@@ -1,10 +1,10 @@
 import React,{useContext} from 'react' 
-import Navigation from '../components/Navigation'
-import UserDashboard from '../components/UserDashboard'
-import CoursesImTaking from '../components/CoursesImTaking'
-import Header from '../components/Header'
-import Footer from '../components/Footer'
-import { AuthContext } from '../context/AuthContext';
+import Navigation from '../../components/Navigation'
+import UserDashboard from '../../components/student/UserDashboard'
+import CoursesImTaking from '../../components/student/CoursesImTaking'
+import Header from '../../components/Header'
+import Footer from '../../components/Footer'
+import { AuthContext } from '../../context/AuthContext';
 
 const Overview = () => {
     const { authToken } = useContext(AuthContext);

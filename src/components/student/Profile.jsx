@@ -1,8 +1,9 @@
 import { useState } from "react"; 
-import {updateProfile} from '../utils/api'
+import { updateProfile ,updatePassword} from '../../utils/api';
+import {supabase} from '../../utils/SupabaseClient';
 
-const ProfileForm = () => {
-  const [error,setError]=useState('');
+const Profile = ({ user, setUser }) => {
+  const [error, setError] = useState('');
   const [profileData, setProfileData] = useState({
     profilePhoto: null,
     firstName: "",
@@ -10,6 +11,9 @@ const ProfileForm = () => {
     email: "",
     language: "English",
     phoneNumber: "",
+  });
+
+  const [passwordData, setPasswordData] = useState({
     currentPassword: "",
     newPassword: "",
   });
@@ -24,30 +28,85 @@ const ProfileForm = () => {
     }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('')
-    try {
-      const response= await updateProfile(profileData);
-      if (response.error){
-        console.error("Error while updating profile", error)
-        setError(error.message);
-      } else {
-          alert("student profile has updated successfully")
-          console.log('student profile has updated successfully');
-      }
-    } catch (error) {
-      console.error("updating profile error", error);
-      setError("An unexpected error occurred. Please try again.");
+  const handlePasswordChange = (e) => {
+    const { name, value } = e.target;
+    setPasswordData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const uploadImage = async (file) => {
+    const fileName = `${Date.now()}_${file.name}`;
+    console.log("Uploading file:", fileName);
+    const { data, error } = await supabase.storage
+      .from('my-storage')
+      .upload(fileName, file);
+
+    if (error) {
+      console.error("Error uploading image", error);
+      throw error;
     }
 
+    const { publicURL } = supabase.storage
+      .from('my-storage')
+      .getPublicUrl(fileName);
+    console.log("Image uploaded successfully", publicURL);
+    return publicURL;
+  };
+
+  const handleProfileSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    
+    try {
+      let profilePhotoUrl = profileData.profilePhoto
+
+      if(profileData.profilePhoto instanceof File) {
+        profilePhotoUrl = await uploadImage(profileData.profilePhoto);
+      }
+
+      const updatedProfileData = {
+        ...profileData,
+        profilePhoto: profilePhotoUrl,
+      };
+      const response = await updateProfile(updatedProfileData);
+      if (response.error) {
+        console.error("Error while updating profile", response.error);
+        setError(response.error.message);
+      } else {
+        alert("Student profile has been updated successfully");
+        console.log('Student profile has been updated successfully');
+      }
+    } catch (error) {
+      console.error("Updating profile error", error);
+      setError("An unexpected error occurred. Please try again.");
+    }
+  };
+
+  const handlePasswordSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    try {
+      const response = await updatePassword(passwordData);
+      if (response.error) {
+        console.error("Error while updating password", response.error);
+        setError(response.error.message);
+      } else {
+        alert("Password has been updated successfully");
+        console.log('Password has been updated successfully');
+      }
+    } catch (error) {
+      console.error("Updating password error", error);
+      setError("An unexpected error occurred. Please try again.");
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="container mx-auto p-4">
-      <div className="bg-white rounded-lg shadow-md p-6">
+    <div className="container mx-auto p-4">
+      <form onSubmit={handleProfileSubmit} className="bg-white rounded-lg shadow-md p-6 mb-4">
         <h2 className="text-2xl font-semibold mb-4">Profile</h2>
-        <h2>{error}</h2>
+        {error && <h2 className="text-red-500">{error}</h2>}
         <div className="mb-4">
           <label htmlFor="profilePhoto" className="block font-medium">Profile Photo</label>
           <div className="mt-1 flex items-center">
@@ -160,19 +219,20 @@ const ProfileForm = () => {
             Save Changes
           </button>
         </div>
-      </div>
+      </form>
 
-      <div className="bg-white rounded-lg shadow-md p-6 mb-4">
+      <form onSubmit={handlePasswordSubmit} className="bg-white rounded-lg shadow-md p-6 mb-4">
         <h2 className="text-2xl font-semibold mb-4">Password</h2>
-
+        {error && <h2 className="text-red-500">{error}</h2>}
         <div className="mb-4">
           <label htmlFor="currentPassword" className="block font-medium">Current Password</label>
           <input 
             type={showPassword ? "text" : "password"} 
             id="currentPassword" 
+            name="currentPassword"
             className="border border-gray-300 rounded-md px-3 py-2 w-full mt-1" 
-            value={profileData.currentPassword} 
-            onChange={handleChange} 
+            value={passwordData.currentPassword} 
+            onChange={handlePasswordChange} 
           />
         </div>
 
@@ -181,9 +241,10 @@ const ProfileForm = () => {
           <input 
             type={showPassword ? "text" : "password"} 
             id="newPassword" 
+            name="newPassword"
             className="border border-gray-300 rounded-md px-3 py-2 w-full mt-1" 
-            value={profileData.newPassword} 
-            onChange={handleChange} 
+            value={passwordData.newPassword} 
+            onChange={handlePasswordChange} 
           />
         </div>
 
@@ -207,9 +268,9 @@ const ProfileForm = () => {
             Save Changes
           </button>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 };
 
-export default ProfileForm;
+export default Profile;

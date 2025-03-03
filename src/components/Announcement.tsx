@@ -1,7 +1,13 @@
 import  { useState }   from 'react'
 
-const Announcement = () => {
-    const announcements = [
+interface AnnouncementItem {
+  date: string;
+  author: string;
+  text: string;
+  link: string;
+}
+const Announcement:React.FC = () => {
+    const announcements:AnnouncementItem[] = [
         {
           date: "7 Jun, 18:07",
           author: "Neway Tadesse",
@@ -26,7 +32,7 @@ const Announcement = () => {
     <div className="announcement-component max-w-x5 bg-white p-4 rounded-lg border border-gray-300 mt-4  overflow-y-auto">
         <h3 className="text-lg font-semibold mb-2">Latest announcements</h3>
         <ul>
-        {announcements.map((announcement, index) => (
+        {announcements.map((announcement:AnnouncementItem, index) => (
           <li key={index} className="mb-4">
             <p className="text-sm text-gray-500">{announcement.date}</p>
             <p className="font-medium">{announcement.author}</p>

@@ -1,10 +1,10 @@
-import React,{useContext} from 'react' 
-import Navigation from '../components/Navigation'
-import UserDashboard from '../components/UserDashboard'
-import Grades from '../components/Grades'
-import Header from '../components/Header'
-import Footer from '../components/Footer'
-import { AuthContext } from '../context/AuthContext';
+import {useContext} from 'react' 
+import Navigation from '../../components/Navigation'
+import UserDashboard from '../../components/student/UserDashboard'
+import Grades from '../../components/student/Grades'
+import Header from '../../components/Header'
+import Footer from '../../components/Footer'
+import { AuthContext } from '../../context/AuthContext';
 import { useLocation } from 'react-router-dom';
 
 

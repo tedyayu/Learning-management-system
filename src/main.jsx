@@ -3,13 +3,15 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './index.css'
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import LoginPage from './pages/LoginPage.jsx'
-import Overview from './pages/Overview.jsx'
-import GradesPage from './pages/GradesPage.jsx'
-import ProfilePage from './pages/ProfilePage.jsx'
-import Home from './pages/Home.jsx'
+import LoginPage from './pages/studentPages/LoginPage'
+import Overview from './pages/studentPages/Overview'
+import GradesPage from './pages/studentPages/GradesPage.jsx'
+import ProfilePage from './pages/studentPages/ProfilePage'
+import Home from './pages/studentPages/Home.jsx'
 import {AuthProvider } from './context/AuthContext.jsx'
-import AdminDashboard from './pages/AdminDashboardPage.jsx'
+import AdminDashboard from './pages/AdimPages/AdminDashboardPage'
+import InstractorDashboard from './pages/instractorPages/InstractorDashboard'
+
 
 
 createRoot(document.getElementById('root')).render(
@@ -23,9 +25,9 @@ createRoot(document.getElementById('root')).render(
           <Route path='/GradesPage' element={<GradesPage/>}/>
           <Route path='/AdminDashboard' element={<AdminDashboard/>}/>
           <Route path='/ProfilePage' element={<ProfilePage/>}/>
+          <Route path='/InstractorDashboard' element={<InstractorDashboard/>}/>
         </Routes>
       </Router>
     </AuthProvider>
-    
-  </StrictMode>,
+  </StrictMode>
 )

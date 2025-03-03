@@ -1,9 +1,14 @@
 import React from 'react';
 
-const CourseCategory = () => {
-  const categories = [
+interface categoryItem{
+  icon:string,
+  name:string
+}
+
+const CourseCategory: React.FC= () => {
+  const categories:categoryItem[] = [
     {
-      icon: '🎓', // You can use an actual icon component here if you have one
+      icon: '🎓',
       name: 'Under Graduate Studies',
     },
     {
