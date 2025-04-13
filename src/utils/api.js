@@ -1,5 +1,8 @@
+
 const API_BASE_URL = "http://localhost:5001";
-const token = localStorage.getItem("authToken");
+
+
+
 
 export const loginUser = async (credentials) => {
     try {
@@ -8,7 +11,8 @@ export const loginUser = async (credentials) => {
         body: JSON.stringify(credentials),
         headers: {
           "Content-Type": "application/json"
-        }
+        },
+        credentials: "include"
       });
         return response.json();
     } catch (error) {
@@ -23,32 +27,30 @@ export const registerStudent= async (credentials)=>{
         body:JSON.stringify(credentials),
         headers:{
             "Content-Type":"application/json"
-        }
+        },
+        credentials: "include"
     })
     return response.json();
 }
+export const logOutUser = async () => {
+    const response = await fetch(`${API_BASE_URL}/api/auth/logout`, {
+      method: "POST",
+      credentials: "include"
+    });
+    return response;
+};
 
-export const registerInstractor = async (credentials)=>{
-    const response=await fetch (`${API_BASE_URL}/api/auth/registerInstractor`,{
-        method:"POST",
-        body:JSON.stringify(credentials),
-        headers:{
-            "Content-Type":"application/json"
-        }
-    })
-    return response.json();
-}
 
 export const updateProfile= async (profileData)=>{
-    const response=await fetch (`${API_BASE_URL}/api/student/update`,{
+    
+    const response=await fetch (`${API_BASE_URL}/api/student/updateProfile`,{
         method:"POST",
         body:JSON.stringify(profileData),
         headers:{
-            "Content-Type":"application/json",
-            "authorization": `Bearer ${token}`
-        }
+            "Content-Type":"application/json"      
+        },
+        credentials: "include"
     })
-    console.log(`Bearer ${token}`);
     return response.json();
 }
 
@@ -59,14 +61,16 @@ export const updatePassword= async (passwordData)=>{
         body:JSON.stringify(passwordData),
         headers:{
             "Content-Type":"application/json",
-            "authorization": `Bearer ${token}`
-        }
+        },
+        credentials: "include"
     })
     return response.json();
 }
 
 export const getAllUsers = async () => {
-    const response = await fetch(`${API_BASE_URL}/api/student/all`);
+    const response = await fetch(`${API_BASE_URL}/api/student/all`,{
+        credentials: "include"
+    });
     return response.json();
 }   
 
@@ -76,7 +80,8 @@ export const searchUsers = async (query) => {
         method: "GET",
         headers: {
             "Content-Type": "application/json"
-        }
+        },
+        credentials: "include"
     });
     return response.json();
 };

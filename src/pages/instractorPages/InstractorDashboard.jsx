@@ -11,8 +11,6 @@ import Zoom from '../../components/instractor/Zoom'
 import Analytics from '../../components/instractor/Analytics'
 import Settings from '../../components/instractor/Settings'
 import Logout from '../../components/instractor/Logout'
-import CourseCategories from '../../components/instractor/CourseCatagories'
-
 
 
 function InstractorDashboard() {
@@ -25,8 +23,6 @@ function InstractorDashboard() {
            
           case "Announcements":
             return <Announcements />;
-          case "Course Category":
-            return <CourseCategories />;
           case "Withdrawals":
             return <Withdrawals />;
           case "Quiz Attempts":
@@ -50,15 +46,13 @@ function InstractorDashboard() {
       };
   return (
   
-
         <>
-        <Header/>
-        <div className="flex h-full  w-full bg-gray-100">
-            <Sidebar activeMenu={activeMenu} setActiveMenu={setActiveMenu} />
-            <main className="flex-1 p-6">{renderContent()}</main>
-        </div>
-    </>
-    
+          <Header/>
+          <div className="flex h-full  w-full bg-gray-100">
+              <Sidebar activeMenu={activeMenu} setActiveMenu={setActiveMenu} />
+              <main className="flex-1 p-6">{renderContent()}</main>
+          </div>
+        </>
     
   );
 }

@@ -13,22 +13,21 @@ import {AuthContext } from '../../context/AuthContext'
 
 const Home = () => {
 
-  const {authToken,user,setAuthToken}=useContext(AuthContext);
+  const {user,setUser}=useContext(AuthContext);
   
-  console.log("Auth Token:", authToken);
   console.log("Auth user:", user);
 
   return (
     <div className="h-screen flex flex-col">
-      <Header isLoggedIn={!!authToken}  user={user} setAuthToken={setAuthToken} />
-      <SubHeader isLoggedIn={!!authToken} user={user}/>
+      <Header isLoggedIn={!!user}  user={user} setUser={setUser}/>
+      <SubHeader isLoggedIn={!!user} user={user}/>
       <div className="flex-grow flex bg-white py-0 border-t border-gray-400" >
         <div className="w-2/5 flex flex-col ml-4">
-          <Navigation isLoggedIn={!!authToken}/>
+          <Navigation isLoggedIn={!!user}/>
           <Announcement /> 
         </div>
         <div className="w-full flex  pr-10 flex-col m-5">
-            {authToken  ? (
+            {user  ? (
               <CourseOverview/>
             ):(
               <>
@@ -40,7 +39,7 @@ const Home = () => {
             
         </div>
         <div className="w-2/5 flex items-end justify-start pr-4 flex-col"> {/* Added padding right */}
-            {authToken ? (
+            {user ? (
               <CourseCategory/>
             ):(
               <Login />

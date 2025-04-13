@@ -1,22 +1,28 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { DepartmentContext } from '../../context/departmentContext'; 
+import {createCourse} from '../../utils/course.api';
 
-const CreateCourseCategory = () => {
-  // State for form fields
+const CreateCourses = () => {
+  const { departments } = useContext(DepartmentContext); 
+
   const [formData, setFormData] = useState({
-    title: '',
-    alias: '',
-    featured: false,
-    image: null,
-    iconClass: 'paint-brush', // Default icon class (e.g., from Font Awesome or custom)
-    description: '',
+    courseName: '',
+    shortDescription: '',
+    credits:'',
+    department:'',
+    courseCode:'',
     status: 'Published',
-    createdBy: '',
-    createdDate: new Date().toISOString().split('T')[0], // Current date
+    createdBy: 'Admin',
+    createdDate: new Date().toISOString().split('T')[0],
     language: 'All',
     access: 'Public',
+    image: null,
+    syllabus: '',
+    startDate: '',
+    endDate: '',
+    price: '',
   });
 
-  // Handle input changes
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData({
@@ -25,7 +31,6 @@ const CreateCourseCategory = () => {
     });
   };
 
-  // Handle image/icon upload (simplified; in practice, use file input and upload logic)
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     setFormData({
@@ -34,113 +39,123 @@ const CreateCourseCategory = () => {
     });
   };
 
-  // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
+    try {
+      const response = await createCourse(formData);
+      if (response.status === 200) {
+        alert('Course created successfully!');
+      }
+      else {
+        console.error('Failed to create course:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error creating course:', error);
+      alert('Failed to create the course. Please try again.');
+    }
   };
 
   return (
     <div className="container mx-auto p-6 bg-white shadow-md rounded-lg">
-      <h2 className="text-2xl font-bold mb-6">Course Categories: Create Item</h2>
+      <h2 className="text-2xl font-bold mb-6">Courses: Create Item</h2>
       
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Title and Alias */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700">Title *</label>
+            <label className="block text-sm font-medium text-gray-700">Course Name *</label>
             <input
               type="text"
-              name="title"
-              value={formData.title}
+              name="courseName"
+              value={formData.courseName}
               onChange={handleChange}
               className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
               required
             />
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Alias (URL)</label>
-            <input
-              type="text"
-              name="alias"
-              value={formData.alias}
-              onChange={handleChange}
-              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            />
-          </div>
+          
         </div>
 
-        {/* Featured Status */}
+        {/* Category */}
         <div>
-          <label className="block text-sm font-medium text-gray-700">Featured</label>
-          <div className="mt-2 space-x-4">
-            <label className="inline-flex items-center">
-              <input
-                type="radio"
-                name="featured"
-                value={true}
-                checked={formData.featured === true}
-                onChange={handleChange}
-                className="form-radio text-indigo-600"
-              />
-              <span className="ml-2 text-gray-700">Yes</span>
-            </label>
-            <label className="inline-flex items-center">
-              <input
-                type="radio"
-                name="featured"
-                value={false}
-                checked={formData.featured === false}
-                onChange={handleChange}
-                className="form-radio text-indigo-600"
-              />
-              <span className="ml-2 text-gray-700">No</span>
-            </label>
-          </div>
+          <label className="block text-sm font-medium text-gray-700">Department</label>
+          <select
+            name="department"
+            value={formData.department}
+            onChange={handleChange}
+            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          >
+             <option value="">Select a department</option>
+             {departments.map((department) => (
+              <option key={department.id} value={department.id}>
+                {department.name}
+              </option>
+            ))}
+          </select>
         </div>
 
-        {/* Image and Icon */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700">Image</label>
+            <label className="block text-sm font-medium text-gray-700">Start Date</label>
             <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
-              className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
-            />
-            {formData.image && (
-              <img src={formData.image} alt="Preview" className="mt-2 h-20 w-auto object-cover rounded" />
-            )}
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Icon Class</label>
-            <input
-              type="text"
-              name="iconClass"
-              value={formData.iconClass}
+              type="date"
+              name="startDate"
+              value={formData.startDate}
               onChange={handleChange}
               className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-              placeholder="e.g., paint-brush"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">End Date</label>
+            <input
+              type="date"
+              name="endDate"
+              value={formData.endDate}
+              onChange={handleChange}
+              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
             />
           </div>
         </div>
-
-        {/* Description */}
+        {/* Short Description */}
         <div>
-          <label className="block text-sm font-medium text-gray-700">Description</label>
-          <textarea
-            name="description"
-            value={formData.description}
+          <label className="block text-sm font-medium text-gray-700">Short Description</label>
+          <input
+            type="text"
+            name="shortDescription"
+            value={formData.shortDescription}
             onChange={handleChange}
-            rows="4"
             className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            placeholder="Enter description here..."
+            placeholder="Enter short description here..."
           />
         </div>
 
-        {/* Status, Created By, Created Date, Language, Access */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Level, Regular Price, Sale Price */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Price</label>
+            <input
+              type="number"
+              name="price"
+              value={formData.price}
+              onChange={handleChange}
+              step="0.01"
+              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Credit</label>
+            <input
+              type="number"
+              name="credits"
+              value={formData.credits}
+              onChange={handleChange}
+              step="0.01"
+              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            />
+          </div>
+          
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label className="block text-sm font-medium text-gray-700">Status</label>
             <select
@@ -153,6 +168,8 @@ const CreateCourseCategory = () => {
               <option value="Unpublished">Unpublished</option>
             </select>
           </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           <div>
             <label className="block text-sm font-medium text-gray-700">Created By</label>
             <input
@@ -185,7 +202,7 @@ const CreateCourseCategory = () => {
             >
               <option value="All">All</option>
               <option value="English">English</option>
-              <option value="French">French</option>
+              <option value="French">Amharic</option>
             </select>
           </div>
           <div>
@@ -197,11 +214,26 @@ const CreateCourseCategory = () => {
               className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
             >
               <option value="Public">Public</option>
-              <option value="Registered">Registered</option>
+              <option value="Registered">For students</option>
               <option value="Special">Special</option>
             </select>
           </div>
         </div>
+
+        {/* Image */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Image</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageUpload}
+            className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+          />
+          {formData.image && (
+            <img src={formData.image} alt="Preview" className="mt-2 h-20 w-auto object-cover rounded" />
+          )}
+        </div>
+
 
         {/* Save Buttons */}
         <div className="flex justify-end space-x-4">
@@ -229,4 +261,4 @@ const CreateCourseCategory = () => {
   );
 };
 
-export default CreateCourseCategory;
+export default CreateCourses;

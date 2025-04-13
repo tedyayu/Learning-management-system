@@ -11,8 +11,7 @@ import Home from './pages/studentPages/Home.jsx'
 import {AuthProvider } from './context/AuthContext.jsx'
 import AdminDashboard from './pages/AdimPages/AdminDashboardPage'
 import InstractorDashboard from './pages/instractorPages/InstractorDashboard'
-
-
+import { CourseDetailsManagment } from './components/admin/CourseDetailsManagment'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -23,7 +22,10 @@ createRoot(document.getElementById('root')).render(
           <Route path='/loginPage' element={<LoginPage/>}/>
           <Route path='/Overview' element={<Overview/>}/>
           <Route path='/GradesPage' element={<GradesPage/>}/>
-          <Route path='/AdminDashboard' element={<AdminDashboard/>}/>
+          <Route path='/AdminDashboard' element={<AdminDashboard/>}>
+            <Route path='/AdminDashboard/course/:courseId' element={<CourseDetailsManagment/>}/>
+          </Route>
+    
           <Route path='/ProfilePage' element={<ProfilePage/>}/>
           <Route path='/InstractorDashboard' element={<InstractorDashboard/>}/>
         </Routes>

@@ -3,12 +3,9 @@ import {useNavigate} from 'react-router-dom'
 import {loginUser} from '../utils/api'
 import  {AuthContext }  from '../context/AuthContext'
 
-const AdminPassword=import.meta.env.VITE_ADMIN_PASSWORD;
-const AdminUsername=import.meta.env.VITE_ADMIN_USERNAME;
-
 
 const Login = () => {
-    const {setAuthToken,setUser}=useContext(AuthContext);
+    const {setUser}=useContext(AuthContext);
     const [formData, setFormData]=useState({username:"",password:""})
     const [error,setError]=useState('');
     const [rememberedUsername, setRememberUsername] = useState(false);
@@ -31,33 +28,33 @@ const Login = () => {
         e.preventDefault();
         setError('')
                 
-                try {
-                    if(formData.username==AdminUsername && formData.password==AdminPassword){
-                        navigate('/AdminDashboard')
-                    }
-                    const response= await loginUser(formData);
-                    if (response.error){
-                        console.error("Error while logingin", error)
-                        setError(error.message);
-                    } else {
-                        console.log('Login successful:');
-                        setAuthToken(response.token);
-                        setUser(response.user);
-                        localStorage.setItem("authToken",response.token)
-                        localStorage.setItem("user",JSON.stringify( response.user))
-                        console.log(response.user)
-                        console.log(response.token)
-                        if (rememberedUsername) {
-                            localStorage.setItem("rememberedUsername", formData.username);
-                        } else {
-                            localStorage.removeItem("rememberedUsername");
-                        }
-                        navigate("/")
-                    }
-                } catch (error) {
-                    console.error("login error", error.message);
-                    setError("An unexpected error occurred. Please try again.");
+        try {
+            const response= await loginUser(formData);
+            
+            if (response.error){
+                console.error("Error while logingin", error)
+                setError(error.message);
+            } else {
+                console.log('Login successful:');
+                setUser(response.user);
+                console.log(response.user)
+                if (rememberedUsername) {
+                    localStorage.setItem("rememberedUsername", formData.username);
+                } else {
+                    localStorage.removeItem("rememberedUsername");
                 }
+                if (response.role === 'ADMIN') {
+                    navigate("/AdminDashboard");
+                } else if (response.user.role === 'INSTRUCTOR') {
+                    navigate("/InstractorDashboard");
+                } else {
+                    navigate("/");
+                }
+        }
+        } catch (error) {
+                console.error("login error", error.message);
+                setError("An unexpected error occurred. Please try again.");
+        }
     };
 
     return (

@@ -14,12 +14,9 @@ export default function RegisterStudent() {
     const fetchUsers = async () => {
       try {
         const response = await getAllUsers();
-        const transformedUsers = response.map(user => ({
-          ...user,
-          username: user.firstName,
-          ID_NO: user.studentID,
-        }));
-        setUsers(transformedUsers);
+        console.log("Fetched users:", response);
+        
+        setUsers(response);
       } catch (error) {
         console.error("Error fetching users:", error);
       }
@@ -71,7 +68,7 @@ export default function RegisterStudent() {
       setSearchResults([response]);
       console.log("Search results:", response);
       console.log("is array?:", searchResults instanceof Array);
-      console.log("Search results Array:", searchResults.map(user => user.firstName));
+      console.log("Search results Array:", searchResults.map(user => user.username));
     } catch (error) {
       console.error("Error searching users:", error);
     }
@@ -108,7 +105,6 @@ export default function RegisterStudent() {
                 <thead>
                   <tr>
                     <th className="px-4 py-2 border">Username</th>
-                    <th className="px-4 py-2 border">Password</th>
                     <th className="px-4 py-2 border">ID No</th>
                     <th className="px-4 py-2 border">Email</th>
                     <th className="px-4 py-2 border">Actions</th>
@@ -116,9 +112,8 @@ export default function RegisterStudent() {
                 </thead>
                 <tbody>
                   <tr>
-                    <td className="border px-4 py-2">{user.firstName}</td>
-                    <td className="border px-4 py-2">{user.password}</td>
-                    <td className="border px-4 py-2">{user.studentID}</td>
+                    <td className="border px-4 py-2">{user.student.firstName}</td>
+                    <td className="border px-4 py-2">{user.student.studentId}</td>
                     <td className="border px-4 py-2">{user.email}</td>
                     <td className="border px-4 py-2">
                       <button className="text-blue-500 hover:text-blue-700 mr-2" onClick={() => setEditingUser(user)}>
@@ -224,7 +219,6 @@ export default function RegisterStudent() {
             <thead>
               <tr>
                 <th className="px-4 py-2 border">Username</th>
-                <th className="px-4 py-2 border">Password</th>
                 <th className="px-4 py-2 border">ID No</th>
                 <th className="px-4 py-2 border">Email</th>
                 <th className="px-4 py-2 border">Actions</th>
@@ -233,9 +227,8 @@ export default function RegisterStudent() {
             <tbody>
               {users.map(user => (
                 <tr key={user.id}>
-                  <td className="border px-4 py-2">{user.firstName}</td>
-                  <td className="border px-4 py-2">{user.password}</td>
-                  <td className="border px-4 py-2">{user.studentID}</td>
+                  <td className="border px-4 py-2">{user.student.firstName}</td>
+                  <td className="border px-4 py-2">{user.student.studentId}</td>
                   <td className="border px-4 py-2">{user.email}</td>
                   <td className="border px-4 py-2">
                     <button className="text-blue-500 hover:text-blue-700 mr-2" onClick={() => setEditingUser(user)}>

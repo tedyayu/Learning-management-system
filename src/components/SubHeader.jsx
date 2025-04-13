@@ -7,7 +7,7 @@ const SubHeader = ({isLoggedIn,user}) => {
         <div className="flex items-center justify-between">
           <div>
             
-            {isLoggedIn ? (<span className="text-4xl font-thin">Welcome {user.firstName}</span>):(
+            {isLoggedIn ? (<span className="text-4xl font-thin">Welcome {user.student.firstName}</span>):(
               <span className="text-4xl font-thin">
               Afro-Lang E-Learning Portal
             </span>)}

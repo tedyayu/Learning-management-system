@@ -14,7 +14,6 @@ import {
 } from "react-icons/fa";
 
 const menuItems = [
-  { name: "Course Category", icon: <FaBook />, path: "/courseCategory" },
     { name: "My Courses", icon: <FaBook />, path: "/mycourses" },
     { name: "Announcements", icon: <FaBell />, path: "/announcements" },
     { name: "Withdrawals", icon: <FaMoneyBillWave />, path: "/withdrawals" },

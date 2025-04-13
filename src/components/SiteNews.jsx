@@ -1,6 +1,18 @@
-import React from 'react';
+import {useState} from 'react';
+import axios from 'axios';
 
 const SiteNews = () => {
+  const [productName, setProductName] = useState('');
+  const [recommendations, setRecommendations] = useState([]);
+
+  const fetchRecommendations = async () => {
+    try {
+      const response = await axios.post('http://localhost:5001/recommend', { product_name: productName });
+      setRecommendations(response.data.recommendations);
+    } catch (error) {
+      console.error('Error fetching recommendations:', error);
+    }
+  };
   const newsItems = [
     {
       title: 'Reset your Office365 password using your phone and recovery email',
@@ -45,6 +57,31 @@ const SiteNews = () => {
           </div>
         ))}
       </div>
+      <div className="p-6 max-w-md mx-auto bg-white rounded-xl shadow-md space-y-4">
+      <h1 className="text-2xl font-bold text-gray-900">Product Recommendations</h1>
+      <input
+        type="text"
+        value={productName}
+        onChange={(e) => setProductName(e.target.value)}
+        placeholder="Enter a product name"
+        className="block w-full px-4 py-2 border rounded-lg focus:ring focus:ring-indigo-300"
+      />
+      <button
+        onClick={fetchRecommendations}
+        className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+      >
+        Get Recommendations
+      </button>
+      {recommendations.length > 0 && (
+        <ul className="space-y-2">
+          {recommendations.map((rec, index) => (
+            <li key={index} className="text-gray-700">
+              {rec}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
     </div>
   );
 };

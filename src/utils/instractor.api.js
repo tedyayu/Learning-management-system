@@ -5,10 +5,19 @@ export const getInstarctor = async () => {
     const instractor = await fetch(`${API_BASE_URL}/api/instractor/all`);
     return instractor.json();
 }
-
+export const registerInstractor = async (credentials)=>{
+    const response=await fetch (`${API_BASE_URL}/api/instractor/registerInstractor`,{
+        method:"POST",
+        body:JSON.stringify(credentials),
+        headers:{
+            "Content-Type":"application/json"
+        }
+    })
+    return response.json();
+}
 export const loginInstractor = async (credentials) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/api/auth/loginInstractor`, {
+        const response = await fetch(`${API_BASE_URL}/api/instractor/loginInstractor`, {
             method: "POST",
             body: JSON.stringify(credentials),
             headers: {
@@ -21,3 +30,4 @@ export const loginInstractor = async (credentials) => {
         throw error;
     }
 }
+

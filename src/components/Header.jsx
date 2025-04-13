@@ -1,9 +1,22 @@
-import {useState, useRef, useEffect} from 'react';
+import {useState, useRef, useEffect,useContext} from 'react';
 import {Link , useNavigate} from 'react-router-dom';
+import { logOutUser } from '../utils/api';
 
 
-const Header=({isLoggedIn,user,setAuthToken})=>{
+const Header=({isLoggedIn,user,setUser})=>{
     const navigate=useNavigate();
+
+    const handleLogout = async () => {
+        const response= await logOutUser();
+        console.log(response.status);
+        if(response.status===200){
+            setUser(null);
+            console.log('logout successful');
+            navigate('/');
+        }else {
+            console.log('logout failed');
+        };
+      }
 
     const [showLinks,setShowLinks]=useState(false)
     const [showUserDropdown, setShowUserDropdown] = useState(false);
@@ -48,15 +61,6 @@ const Header=({isLoggedIn,user,setAuthToken})=>{
         { href: '/amu-email', text: 'AMU Email' }, 
     ];
 
-    const handleLogout=()=>{
-        console.log("Logging out...");
-        localStorage.removeItem("authToken");
-        setAuthToken(null);
-        console.log("Auth token removed:", localStorage.getItem("authToken"));
-        setShowUserDropdown(false);
-        //window.location.reload();
-        navigate('/')
-        };
 
     return(
         <header className="bg-gray-800 text-white py-4">
@@ -68,7 +72,6 @@ const Header=({isLoggedIn,user,setAuthToken})=>{
                 <nav>
                     <ul className="flex space-x-6">
                         <li ><Link to="/">Home</Link></li>
-                        <li><Link to="/InstractorDashboard">Instractor Dashboard</Link></li>
                         <li className="relative">
                             <span className="cursor-pointer flex items-center" 
                                 onClick={toggleLinks}
@@ -92,7 +95,7 @@ const Header=({isLoggedIn,user,setAuthToken})=>{
                              <li className="relative"> {/* User profile dropdown */}
                              <div className="flex items-center cursor-pointer" onClick={toggleUserDropdown}>
                                  <img src="no src" alt="Profile" className="h-8 w-8 rounded-full mr-2" />
-                                 <span>{user.firstName}</span>
+                                 <span>{user.username}</span>
                                  <span className="cursor-pointer flex items-center" 
                                 onClick={toggleUserDropdown}>▼</span> {/* Dropdown arrow */}
                              

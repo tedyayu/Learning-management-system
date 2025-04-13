@@ -1,17 +1,31 @@
-import { useState } from "react";
+import { useState , useEffect} from "react";
 import { PencilIcon, TrashIcon } from "lucide-react";
-import {registerInstractor} from '../../utils/api'
+import {registerInstractor, getInstarctor} from '../../utils/instractor.api'
 
 
 export default function RegisterInstarctorPage() { 
  
   const [users, setUsers] = useState([]);
   const [editingUser, setEditingUser] = useState(null);
-  const [newUser, setNewUser] = useState({ username: "", password: "",ID_NO:""});
+  const [newUser, setNewUser] = useState({ username: "", password: "",ID_NO:"",email:"",role:"instractor"});
   const [searchQuery, setSearchQuery] = useState("");
-  //const [searchRole, setSearchRole] = useState("student");
   const [searchResults, setSearchResults] = useState([]);
   const [error, setError] = useState("");
+  const [instractors, setInstractors] = useState([]);
+
+  useEffect(() => {
+    const fetchInstractor = async () => {
+      try {
+        const data = await getInstarctor();
+        setInstractors(data);       
+      } catch (error) {
+        console.error('There was an error fetching the Instractors!', error);
+      } 
+    };
+
+    fetchInstractor();
+  }, []);
+  
 
 
   const addUser = async (e) => {
@@ -30,7 +44,7 @@ export default function RegisterInstarctorPage() {
       }else{
         alert("new Instractor added")
         setUsers([...users, { ...newUser, id: users.length + 1 }]);
-        setNewUser({ username: "", password: "",ID_NO:""});
+        setNewUser({ username: "", password: "",ID_NO:"",email:"",role:"instractor" });
       }
 
     } catch (error) {
@@ -93,7 +107,7 @@ export default function RegisterInstarctorPage() {
                     <tr>
                       
                       <th className="px-4 py-2 border">Instractor Name</th>
-                      <th className="px-4 py-2 border">password</th>
+                      <th className="px-4 py-2 border">Email</th>
                       <th className="px-4 py-2 border">Id No</th>
                       <th className="px-4 py-2 border">Actions</th>
                     </tr>
@@ -103,7 +117,7 @@ export default function RegisterInstarctorPage() {
                       <tr key={user.id}>
                         
                         <td className="border px-4 py-2">{user.username}</td>
-                        <td className="border px-4 py-2">{user.password}</td>
+                        <td className="border px-4 py-2">{user.email}</td>
                         <td className="border px-4 py-2">{user.ID_NO}</td>
                         <td className="border px-4 py-2">
                           <button className="text-blue-500 hover:text-blue-700 mr-2" onClick={() => setEditingUser(user)}>
@@ -169,7 +183,30 @@ export default function RegisterInstarctorPage() {
             }
           required/>
         </div>
-        
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2">Email</label>
+          <input
+            className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight"
+            type="email"
+            placeholder="Email"
+            value={editingUser ? editingUser.email : newUser.email}
+            onChange={e =>
+              editingUser ? setEditingUser({ ...editingUser, email: e.target.value })
+                : setNewUser({ ...newUser, email: e.target.value })
+            }
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2">Role</label>
+          <input
+            className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight"
+            type="text"
+            placeholder="Role"
+            value={newUser.role}
+            readOnly
+          />
+        </div>
         <div className="flex items-center justify-between">
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -195,27 +232,27 @@ export default function RegisterInstarctorPage() {
       {/* Instructor List */}
       <div className="bg-white shadow-md rounded px-8 pt-6 pb-8">
         <h2 className="text-xl font-semibold mb-4">Instructors 🎓</h2>
-        {users.length > 0 ? (
+        {instractors.length > 0 ? (
           <table className="min-w-full border">
             <thead>
               <tr>
                 <th className="px-4 py-2 border">Username</th>
-                <th className="px-4 py-2 border">password</th>
+                <th className="px-4 py-2 border">Email</th>
                 <th className="px-4 py-2 border">ID_NO</th>
                 <th className="px-4 py-2 border">Actions</th>
               </tr>
             </thead>
             <tbody>
-              {users.map(user => (
-                <tr key={user.id}>
-                  <td className="border px-4 py-2">{user.username}</td>
-                  <td className="border px-4 py-2">{user.password}</td>
-                  <td className="border px-4 py-2">{user.ID_NO}</td>
+              {instractors.map(instractor => (
+                <tr key={instractor.id}>
+                  <td className="border px-4 py-2">{instractor.firstName}</td>
+                  <td className="border px-4 py-2">{instractor.email}</td>
+                  <td className="border px-4 py-2">{instractor.instructorId}</td>
                   <td className="border px-4 py-2">
-                    <button className="text-blue-500 hover:text-blue-700 mr-2" onClick={() => setEditingUser(user)}>
+                    <button className="text-blue-500 hover:text-blue-700 mr-2" onClick={() => setEditingUser(instractor)}>
                       <PencilIcon className="h-5 w-5" />
                     </button>
-                    <button className="text-red-500 hover:text-red-700" onClick={() => deleteUser(user.id)}>
+                    <button className="text-red-500 hover:text-red-700" onClick={() => deleteUser(instractor.id)}>
                       <TrashIcon className="h-5 w-5" />
                     </button>
                   </td>

@@ -1,6 +1,6 @@
 import { useState } from "react"; 
 import { updateProfile ,updatePassword} from '../../utils/api';
-import {supabase} from '../../utils/SupabaseClient';
+//import {supabase} from '../../utils/SupabaseClient';
 
 const Profile = ({ user, setUser }) => {
   const [error, setError] = useState('');
@@ -35,6 +35,7 @@ const Profile = ({ user, setUser }) => {
       [name]: value,
     }));
   };
+  /*
 
   const uploadImage = async (file) => {
     const fileName = `${Date.now()}_${file.name}`;
@@ -55,13 +56,16 @@ const Profile = ({ user, setUser }) => {
     return publicURL;
   };
 
+  */
   const handleProfileSubmit = async (e) => {
     e.preventDefault();
     setError('');
     
     try {
+      /*
       let profilePhotoUrl = profileData.profilePhoto
 
+      
       if(profileData.profilePhoto instanceof File) {
         profilePhotoUrl = await uploadImage(profileData.profilePhoto);
       }
@@ -70,7 +74,8 @@ const Profile = ({ user, setUser }) => {
         ...profileData,
         profilePhoto: profilePhotoUrl,
       };
-      const response = await updateProfile(updatedProfileData);
+      */
+      const response = await updateProfile(profileData);
       if (response.error) {
         console.error("Error while updating profile", response.error);
         setError(response.error.message);

@@ -1,13 +1,9 @@
 import { FaBook } from "react-icons/fa";
-import CreateCourses from "./CreateCourses";
-import { useState } from "react";
+
+
 
 const MyCourses = () => {
-  const [showCreateForm, setShowCreateForm] = useState(false);
-
-  const handleNewButtonClick = () => {
-    setShowCreateForm(true);
-  };
+ 
   const courses = [
     {
       id: 1,
@@ -66,12 +62,8 @@ const MyCourses = () => {
           <FaBook className="text-blue-500 text-2xl mr-2" />
           <h2 className="text-2xl font-semibold">My Courses</h2>
         </div>
-        <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors duration-200" onClick={handleNewButtonClick}>
-          Create a New Course
-        </button>
+     
       </div>
-      {showCreateForm && <CreateCourses />}
-
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {courses.map((course) => (
           <div
