@@ -2,7 +2,7 @@ import { useState, useContext } from 'react';
 import { DepartmentContext } from '../../context/departmentContext'; 
 import {createCourse} from '../../utils/course.api';
 
-const CreateCourses = () => {
+const CreateCourses = ({ onClose }) => {
   const { departments } = useContext(DepartmentContext); 
 
   const [formData, setFormData] = useState({
@@ -252,6 +252,7 @@ const CreateCourses = () => {
           <button
             type="button"
             className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            onClick={onClose}
           >
             Close
           </button>

@@ -5,7 +5,13 @@ const Header = () => {
     <header className="bg-white shadow-md p-4 flex items-center justify-between w-full">
       {/* Logo */}
       <div className="flex items-center">
-      <h1 className="text-2xl font-bold mb-5">Instractor Dashboard</h1>
+        <img
+          src="https://via.placeholder.com/150" // Replace with actual logo URL
+          alt="Logo"
+          className="h-10 w-auto mr-4"
+        />
+        
+
       </div>
 
       {/* Search and Navigation */}

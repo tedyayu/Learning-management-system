@@ -1,29 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { PencilIcon, TrashIcon } from "lucide-react";
-import { registerStudent, getAllUsers, searchUsers } from '../../utils/api';
+import { registerStudent, searchUsers } from '../../utils/api';
+import {StudentContext} from "../../context/StudentContext"
 
 export default function RegisterStudent() { 
-  const [users, setUsers] = useState([]);
+  const { students, setStudents } = useContext(StudentContext);
   const [editingUser, setEditingUser] = useState(null);
   const [newUser, setNewUser] = useState({ username: "", password: "", ID_NO: "", email: "" });
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await getAllUsers();
-        console.log("Fetched users:", response);
-        
-        setUsers(response);
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      }
-    };
-
-    fetchUsers();
-  }, []);
+  
 
   useEffect(() => {
     console.log("Search results updated:", searchResults);
@@ -42,7 +30,7 @@ export default function RegisterStudent() {
         console.error("response error", response.error);
       } else {
         alert("new user added");
-        setUsers([...users, { ...newUser, id: users.length + 1 }]);
+        setStudents([...students, { ...newUser, id: students.length + 1 }]);
         setNewUser({ username: "", password: "", ID_NO: "", email: "" });
       }
     } catch (error) {
@@ -53,12 +41,12 @@ export default function RegisterStudent() {
 
   const updateUser = (e) => {
     e.preventDefault();
-    setUsers(users.map(user => (user.id === editingUser.id ? editingUser : user)));
+    setStudents(students.map(user => (user.id === editingUser.id ? editingUser : user)));
     setEditingUser(null);
   };
 
   const deleteUser = id => {
-    setUsers(users.filter(user => user.id !== id));
+    setStudents(students.filter(user => user.id !== id));
   };
 
   const handleSearch = async () => {
@@ -76,7 +64,7 @@ export default function RegisterStudent() {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Register Student</h1>
+      <h1 className="text-2xl  font-semibold text-gray-900 mb-4">Register Student</h1>
 
       <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         <h2 className="text-xl font-semibold mb-4">Search Student</h2>
@@ -214,7 +202,7 @@ export default function RegisterStudent() {
       {/* Student List */}
       <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-6">
         <h2 className="text-xl font-semibold mb-4">Students 📚</h2>
-        {users.length > 0 ? (
+        {students.length > 0 ? (
           <table className="min-w-full border">
             <thead>
               <tr>
@@ -225,7 +213,7 @@ export default function RegisterStudent() {
               </tr>
             </thead>
             <tbody>
-              {users.map(user => (
+              {students.map(user => (
                 <tr key={user.id}>
                   <td className="border px-4 py-2">{user.student.firstName}</td>
                   <td className="border px-4 py-2">{user.student.studentId}</td>

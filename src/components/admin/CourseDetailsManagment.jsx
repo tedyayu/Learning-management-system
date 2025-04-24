@@ -9,12 +9,14 @@ export const CourseDetailsManagment = () => {
   const [courseDetails, setCourseDetails] = useState([]);
   const [selectedInstructor, setSelectedInstructor] = useState('');
   const { instractors } = useContext(InstractorContext);
+  const [courseDatawithInstractor, setCourseDataWithInstractor] = useState(null);
 
   useEffect(() => {
     const fetchCourseDetails = async () => {
       const courseData =await fetchSingleCourse(courseId);
       setCourseDetails(courseData);
       console.log("the new course data is",courseDetails);
+      setCourseDataWithInstractor(courseData);
     };
 
     fetchCourseDetails();
@@ -22,8 +24,9 @@ export const CourseDetailsManagment = () => {
 
   const handleAssignInstructor = async () => {
     if (selectedInstructor) {
-      const assignedInstractors= await assignInstractor(courseId, selectedInstructor);
-      console.log("the assigned instructor is",assignedInstractors);
+      const courseDataAfterAssignedINstructor= await assignInstractor(courseId, selectedInstructor);
+      setCourseDataWithInstractor(courseDataAfterAssignedINstructor);
+      console.log("the new course data after assigned instructor is",courseDatawithInstractor);
       alert(`Instructor assigned successfully!`);
     } else {
       alert("Please select an instructor.");
@@ -50,7 +53,11 @@ export const CourseDetailsManagment = () => {
           <p><span className="font-medium text-gray-900">Start Date:</span> {courseDetails.startDate}</p>
           <p><span className="font-medium text-gray-900">Duration:</span> {courseDetails.duration}</p>
           <p><span className="font-medium text-gray-900">Syllabus:</span> {courseDetails.syllabus}</p>
-        </div>
+          <p><span className="font-medium text-gray-900">Price:</span> {courseDetails.price}</p>
+          <p>
+            <span className="font-medium text-gray-900">Instructor:</span> 
+            {courseDatawithInstractor?.instructor?.firstName || "Not assigned yet"}
+          </p>        </div>
       </div>
 
       <div className="border-t border-gray-200 pt-6">
