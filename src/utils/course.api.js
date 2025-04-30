@@ -68,3 +68,19 @@ export const assignInstractor = async (courseId, instractorId) => {
       throw error;
   }
 }
+
+export const enrollStudents = async (students, courseId) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/course/enrollStudents`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ students, courseId }),
+    });
+    return await response.json();
+  } catch (error) {
+    console.error('There was an error enrolling students!', error);
+    throw error;
+  }
+}

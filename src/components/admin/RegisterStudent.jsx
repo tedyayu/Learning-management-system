@@ -2,15 +2,17 @@ import { useState, useEffect, useContext } from "react";
 import { PencilIcon, TrashIcon } from "lucide-react";
 import { registerStudent, searchUsers } from '../../utils/api';
 import {StudentContext} from "../../context/StudentContext"
+import { DepartmentContext } from "../../context/departmentContext";
+
 
 export default function RegisterStudent() { 
   const { students, setStudents } = useContext(StudentContext);
+  const { departments } = useContext(DepartmentContext);
   const [editingUser, setEditingUser] = useState(null);
-  const [newUser, setNewUser] = useState({ username: "", password: "", ID_NO: "", email: "" });
+  const [newUser, setNewUser] = useState({ username: "", password: "", ID_NO: "", email: "",department: "" });
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [error, setError] = useState("");
-
   
 
   useEffect(() => {
@@ -31,7 +33,7 @@ export default function RegisterStudent() {
       } else {
         alert("new user added");
         setStudents([...students, { ...newUser, id: students.length + 1 }]);
-        setNewUser({ username: "", password: "", ID_NO: "", email: "" });
+        setNewUser({ username: "", password: "", ID_NO: "", email: "", department: "" });
       }
     } catch (error) {
       setError("Error registering user");
@@ -179,6 +181,26 @@ export default function RegisterStudent() {
             }
             required
           />
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            Department
+          </label>
+          <select
+            className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight"
+            value={newUser.department}
+            onChange={(e) =>
+              setNewUser({ ...newUser, department: e.target.value })
+            }
+            required
+          >
+            <option value="">Select a department</option>
+            {departments.map((dept) => (
+              <option key={dept.id} value={dept.name}>
+                {dept.name}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="flex items-center justify-between">
           <button
