@@ -1,19 +1,21 @@
 import { useState, useContext } from "react";
-import { CourseContext } from "../../context/CourseContext";
+//import { CourseContext } from "../../context/CourseContext";
 import { DepartmentContext } from "../../context/departmentContext";
 import { StudentContext } from "../../context/StudentContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { enrollStudents } from "../../utils/course.api";
 
 const CourseEnrollment = () => {
   const navigate = useNavigate();
-
-  const { courses } = useContext(CourseContext);
+  const { courseId } = useParams();
+  
+  //const { courses } = useContext(CourseContext);
   const { departments } = useContext(DepartmentContext);
   const { students } = useContext(StudentContext);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [departmentFilter, setDepartmentFilter] = useState("");
-  const [selectedCourse, setSelectedCourse] = useState("");
+  //const [selectedCourse, setSelectedCourse] = useState("");
   const [selectedStudentIds, setSelectedStudentIds] = useState([]);
 
   const handleSearch = (e) => {
@@ -24,9 +26,9 @@ const CourseEnrollment = () => {
     setDepartmentFilter(e.target.value);
   };
 
-  const handleCourseChange = (e) => {
-    setSelectedCourse(e.target.value);
-  };
+  // const handleCourseChange = (e) => {
+  //   setSelectedCourse(e.target.value);
+  // };
 
   const handleCheckboxChange = (studentId) => {
     if (selectedStudentIds.includes(studentId)) {
@@ -37,10 +39,10 @@ const CourseEnrollment = () => {
   };
 
   const handleEnrollStudents = async () => {
-    if (!selectedCourse) {
-      alert("Please select a course first.");
-      return;
-    }
+    // if (!selectedCourse) {
+    //   alert("Please select a course first.");
+    //   return;
+    // }
     if (selectedStudentIds.length === 0) {
       alert("Please select at least one student.");
       return;
@@ -48,14 +50,15 @@ const CourseEnrollment = () => {
     const selectedStudents = students.filter((student) => selectedStudentIds.includes(student.id));
     
     try {
-          console.log("Sending request to enroll:", selectedStudents , selectedCourse);
-          const response = await enrollStudents(selectedStudents , selectedCourse);
+          console.log("Sending request to enroll:", selectedStudents , courseId);
+          const response = await enrollStudents(selectedStudents , courseId);
           if (response.error) {
             console.error("response error", response.error);
           } else {
-            alert(`Enrolled ${selectedStudents.length} student(s) to course ID: ${selectedCourse}`);
+            console.log("response", response);
+            alert(`Enrolled ${selectedStudents.length} student(s) to course ID: ${courseId}`);
             setSelectedStudentIds([]); 
-            setSelectedCourse(""); 
+            //setSelectedCourse(""); 
           }
         } catch (error) {
           console.error("error registering user", error);
@@ -114,7 +117,7 @@ const CourseEnrollment = () => {
             </option>
           ))}
         </select>
-        <select
+        {/* <select
           value={selectedCourse}
           onChange={handleCourseChange}
           className="p-2 border border-gray-300 rounded"
@@ -125,7 +128,7 @@ const CourseEnrollment = () => {
               {course.name}
             </option>
           ))}
-        </select>
+        </select> */}
       </div>
 
       {/* Students Table */}

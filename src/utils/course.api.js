@@ -69,14 +69,14 @@ export const assignInstractor = async (courseId, instractorId) => {
   }
 }
 
-export const enrollStudents = async (students, courseId) => {
+export const enrollStudents = async (selectedStudents, courseId) => {
   try {
     const response = await fetch(`${API_BASE_URL}/api/course/enrollStudents`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ students, courseId }),
+      body: JSON.stringify({ selectedStudents, courseId }),
     });
     return await response.json();
   } catch (error) {
@@ -84,3 +84,18 @@ export const enrollStudents = async (students, courseId) => {
     throw error;
   }
 }
+
+export const fetchEnrolledUsers = async (courseId) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/course/${courseId}/enrolledUsers`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return await response.json();
+  } catch (error) {
+    console.error('There was an error fetching the enrolled users!', error);
+    throw error;
+  }
+};

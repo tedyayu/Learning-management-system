@@ -1,4 +1,3 @@
-// src/pages/AdminDashboard.jsx
 import { Link } from 'react-router-dom';
 import { Book, Users, Coins, MessageCircle } from 'lucide-react';
 
