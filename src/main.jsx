@@ -33,6 +33,8 @@ import Analytics from "./components/instractor/Analytics";
 import Settings from "./components/instractor/Settings";
 import Logout from "./components/instractor/Logout";
 import MyDashboard from "./components/instractor/MyDashboard";
+import CourseContent from "./components/instractor/CourseContent";
+import CreateAssignment from "./components/instractor/CreateAssignment";
 
 
 createRoot(document.getElementById("root")).render(
@@ -60,6 +62,8 @@ createRoot(document.getElementById("root")).render(
           <Route path="/InstractorDashboard" element={<InstractorDashboard />}>
             <Route index element={<MyDashboard />} />
             <Route path="mycourses" element={<MyCourses />} />
+            <Route path="mycourses/:courseId" element={<CourseContent/>}/>
+            <Route path="mycourses/:courseId/create-assignment" element={<CreateAssignment />} />
             <Route path="announcements" element={<Announcements />} />
             <Route path="withdrawals" element={<Withdrawals />} />
             <Route path="quiz-attempts" element={<QuizAttempts />} />

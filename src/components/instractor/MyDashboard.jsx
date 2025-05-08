@@ -1,7 +1,12 @@
-import  { useState } from 'react';
+import  { useState , useContext} from 'react';
+import { AuthContext } from '../../context/AuthContext';
+import {InstractorContext} from '../../context/InstractorContext';
 
 const MyDashboard = () => {
-  // State for Courses Progress
+  const { user } = useContext(AuthContext);
+  const { singleInstractor } = useContext(InstractorContext);
+  
+
   const [courseProgress, setCourseProgress] = useState([
     { name: "Math 101", progress: 63, classes: 5 },
     { name: "Math 102", progress: 45, classes: 3 },
@@ -9,7 +14,6 @@ const MyDashboard = () => {
     { name: "Math 104", progress: 25, classes: 2 },
   ]);
 
-  // State for What's Due
   const [dueItems, setDueItems] = useState([
     {
       course: 'Math 101',
@@ -37,7 +41,6 @@ const MyDashboard = () => {
     }
   ]);
 
-  // State for Latest Uploaded Files
   const [uploadedFiles, setUploadedFiles] = useState([
     {
       name: 'ClassPresentation.PDF',
@@ -116,8 +119,8 @@ const MyDashboard = () => {
       {/* Main Content */}
       <div className="flex-1 p-6">
         <div className="mb-6">
-          <h1 className="text-3xl font-bold">Welcome Mr.Khalid,</h1>
-          <p className="text-gray-500 italic">I am not a teacher, but an awakened!</p>
+          <h1 className="text-3xl font-bold">Welcome Instractor {user.username},</h1>
+          
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

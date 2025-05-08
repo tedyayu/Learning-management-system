@@ -1,17 +1,6 @@
-//import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import Sidebar from "../../components/instractor/SideBar";
 import Header from "../../components/instractor/Header";
-// import MyCourses from '../../components/instractor/MyCourses'
-// import Announcements from '../../components/instractor/Announcements'
-// import Withdrawals from '../../components/instractor/Withdrawals'
-// import QuizAttempts from '../../components/instractor/QuizAttempts'
-// import GoogleMeet from '../../components/instractor/GoogleMeet'
-// import Assignments from '../../components/instractor/Assignments'
-// import Zoom from '../../components/instractor/Zoom'
-// import Analytics from '../../components/instractor/Analytics'
-// import Settings from '../../components/instractor/Settings'
-// import Logout from '../../components/instractor/Logout'
 import { DepartmentProvider } from "../../context/departmentContext";
 import { InstractorProvider } from "../../context/InstractorContext";
 import { CourseProvider } from "../../context/CourseContext";
@@ -19,36 +8,7 @@ import { StudentProvider } from "../../context/StudentContext";
 
 
 function InstractorDashboard() {
-    // const [activeMenu, setActiveMenu] = useState("My Courses");
-
-    // const renderContent = () => {
-    //     switch (activeMenu) {
-    //       case "My Courses":
-    //         return <MyCourses />;
-           
-    //       case "Announcements":
-    //         return <Announcements />;
-    //       case "Withdrawals":
-    //         return <Withdrawals />;
-    //       case "Quiz Attempts":
-    //         return <QuizAttempts />;
-    //         case "Google Meet":
-    //             return <GoogleMeet />;
-    //         case "Assignments":
-    //             return <Assignments />;
-    //         case "Zoom":
-    //             return <Zoom />;
-    //        case "Analytics":
-    //             return <Analytics />;
-    //         case "Settings":
-    //             return <Settings />;
-    //         case "Logout":
-    //             return <Logout />;
-
-    //       default:
-    //         return <div className="bg-white p-6 rounded-lg shadow-md"><p className="text-gray-600">Select a section</p></div>;
-    //     }
-    //   };
+    
   return (
   
         <StudentProvider>

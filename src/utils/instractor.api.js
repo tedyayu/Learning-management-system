@@ -5,6 +5,10 @@ export const getInstarctor = async () => {
     const instractor = await fetch(`${API_BASE_URL}/api/instractor/all`);
     return instractor.json();
 }
+export const getSingleInstarctor = async (id) => {
+    const instractor = await fetch(`${API_BASE_URL}/api/instractor/${id}`);
+    return instractor.json();
+}
 export const registerInstractor = async (credentials)=>{
     const response=await fetch (`${API_BASE_URL}/api/instractor/registerInstractor`,{
         method:"POST",
