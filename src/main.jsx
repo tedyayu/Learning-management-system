@@ -35,6 +35,8 @@ import Logout from "./components/instractor/Logout";
 import MyDashboard from "./components/instractor/MyDashboard";
 import CourseContent from "./components/instractor/CourseContent";
 import CreateAssignment from "./components/instractor/CreateAssignment";
+import CreateLesson from "./components/instractor/CreateLesson";
+import AddYoutubeVideo from "./components/instractor/AddYouTubeVideo";
 
 
 createRoot(document.getElementById("root")).render(
@@ -59,11 +61,14 @@ createRoot(document.getElementById("root")).render(
             <Route path="course/:courseId/enroll/user-enrollment" element={<CourseEnrollment />} />
           </Route>
 
+
           <Route path="/InstractorDashboard" element={<InstractorDashboard />}>
             <Route index element={<MyDashboard />} />
             <Route path="mycourses" element={<MyCourses />} />
             <Route path="mycourses/:courseId" element={<CourseContent/>}/>
             <Route path="mycourses/:courseId/create-assignment" element={<CreateAssignment />} />
+            <Route path="mycourses/:courseId/create-lesson" element={<CreateLesson />} />
+            <Route path="mycourses/:courseId/create-video" element={<AddYoutubeVideo />} />
             <Route path="announcements" element={<Announcements />} />
             <Route path="withdrawals" element={<Withdrawals />} />
             <Route path="quiz-attempts" element={<QuizAttempts />} />

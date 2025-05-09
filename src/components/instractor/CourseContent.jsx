@@ -1,27 +1,60 @@
-import { useState } from 'react';
-import {useNavigate , useParams} from 'react-router-dom';
-
+import { useState,useEffect} from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import {createChapter, fetchSingleCourse} from '../../utils/course.api'; // Assuming you have an API function to create a chapter
 
 const CourseContent = () => {
-  const [lessons, setLessons] = useState([]);
-  const [showLessonModal, setShowLessonModal] = useState(false);
+  const [chapters, setChapters] = useState([]); 
+  const [showChapterModal, setShowChapterModal] = useState(false);
+  const [courseTitle, setCourseTitle] = useState(''); 
   const [showContentFormId, setShowContentFormId] = useState(null);
-  const [newLessonTitle, setNewLessonTitle] = useState('');
+  const [newChapterTitle, setNewChapterTitle] = useState('');
   const navigate = useNavigate();
-  const {courseId} = useParams();  
+  const { courseId } = useParams();
 
-  const handleAddLesson = () => {
-    if (newLessonTitle.trim() === '') return;
-
-    const newLesson = {
-      id: Date.now(),
-      title: newLessonTitle,
-      contents: [],
+  useEffect(() => {
+    const fetchCourse = async () => {
+      try {
+        const course = await fetchSingleCourse(courseId); 
+        setCourseTitle(course.name); 
+        setChapters(course.Chapter || []);
+      } catch (error) {
+        console.error('Error fetching course:', error);
+        alert('Failed to fetch course data');
+      }
     };
 
-    setLessons([...lessons, newLesson]);
-    setNewLessonTitle('');
-    setShowLessonModal(false);
+    fetchCourse();
+  }, [courseId]);
+
+  const handleAddChapter = async () => {
+
+    if (newChapterTitle.trim() === '') {
+      alert('Chapter title cannot be empty');
+      return;
+    }
+
+    const newChapter = {
+      title: newChapterTitle, 
+    };
+
+
+    try{
+      const createdChapter= await createChapter(courseId, newChapter);
+      if (!createdChapter) {
+        alert('Failed to create chapter');
+        return;
+      }
+      setChapters((prevChapters) => [...prevChapters, createdChapter]); 
+      alert('Chapter created successfully');
+      
+    }catch(error){
+      console.error('Error creating chapter:', error);
+      alert('Failed to create chapter');
+      return;
+    }finally {
+      setNewChapterTitle('');
+      setShowChapterModal(false);
+    }
   };
 
   return (
@@ -29,48 +62,30 @@ const CourseContent = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-semibold">Contents</h1>
-          <p className="text-sm text-gray-500">Let's construct your course and incorporate various materials and activities.</p>
+        <h1 className="text-xl font-semibold">{courseTitle || 'Course Content'}</h1>
+        <p className="text-sm text-gray-500">
+            Let's construct your course and incorporate various materials and activities.
+          </p>
         </div>
         <div className="flex items-center space-x-3">
           <button
-            onClick={() => setShowLessonModal(true)}
+            onClick={() => setShowChapterModal(true)}
             className="px-4 py-2 border rounded-md bg-white text-sm hover:bg-gray-100"
           >
-            + Add lesson
+            + Add Chapter
           </button>
           <button className="bg-blue-500 text-white px-4 py-2 rounded-md text-sm">Active</button>
         </div>
       </div>
 
-      {/* Lessons Dropdown Info */}
-      {lessons.length === 0 ? (
-        <div className="bg-white p-4 rounded-md shadow-sm text-gray-500">
-          <strong className="text-black">java</strong>
-          <p>0 Chapters - No materials</p>
-        </div>
-      ) : (
-        <div className="bg-white p-4 rounded-md shadow-sm">
-          <div className="flex justify-between items-center">
-            <strong className="text-black">java</strong>
-            <select className="border rounded px-2 py-1 text-sm">
-              <option>Select Lesson / Topic</option>
-              {lessons.map((lesson) => (
-                <option key={lesson.id}>{lesson.title}</option>
-              ))}
-            </select>
-          </div>
-        </div>
-      )}
 
-      {/* Lesson List */}
-      {lessons.map((lesson, index) => (
-        <div key={lesson.id} className="bg-white rounded-md shadow-sm p-4 space-y-4">
+      {chapters.map((chapter, index) => ( 
+        <div key={chapter.id} className="bg-white rounded-md shadow-sm p-4 space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <span className="font-bold text-lg">0{index + 1}</span>
               <div>
-                <h2 className="text-base font-medium">{lesson.title}</h2>
+                <h2 className="text-base font-medium">{chapter.title}</h2>
                 <span className="text-xs bg-yellow-200 px-2 py-0.5 rounded">Inactive</span>
               </div>
             </div>
@@ -83,9 +98,7 @@ const CourseContent = () => {
 
           <div className="pl-8">
             <button
-              onClick={() =>
-                setShowContentFormId(lesson.id)
-              }
+              onClick={() => setShowContentFormId(chapter.id)} // Updated from "lesson.id"
               className="bg-sky-500 text-white px-4 py-1 rounded text-sm"
             >
               Add content
@@ -105,7 +118,7 @@ const CourseContent = () => {
             <div className="flex justify-between items-center">
               <h2 className="text-lg font-semibold">Add Content</h2>
               <button
-                className="text-gray-500 hover:text-black text-xl"
+                className="text-gray-900 hover:text-black text-2xl"
                 onClick={() => setShowContentFormId(null)}
               >
                 ×
@@ -135,12 +148,33 @@ const CourseContent = () => {
 
               {/* Right: Content Types */}
               <div className="grid grid-cols-3 gap-4 text-sm text-center">
-                <div className="p-4 border rounded hover:bg-gray-50 cursor-pointer" onClick={()=>navigate(`/InstractorDashboard/mycourses/${courseId}/create-assignment`)}>📋<br />Assignment</div>
+                <div
+                  className="p-4 border rounded hover:bg-gray-50 cursor-pointer"
+                  onClick={() => navigate(`/InstractorDashboard/mycourses/${courseId}/create-lesson`)}
+                >
+                  📖<br />
+                  Lesson
+                </div>
+                <div
+                  className="p-4 border rounded hover:bg-gray-50 cursor-pointer"
+                  onClick={() =>
+                    navigate(`/InstractorDashboard/mycourses/${courseId}/create-assignment`)
+                  }
+                >
+                  📋<br />
+                  Assignment
+                </div>
+                <div
+                  className="p-4 border rounded hover:bg-gray-50 cursor-pointer"
+                  onClick={() => navigate(`/InstractorDashboard/mycourses/${courseId}/create-video`)}
+                >
+                  ▶️<br />
+                  YouTube
+                </div>
                 <div className="p-4 border rounded hover:bg-gray-50 cursor-pointer">📖<br />Scorm</div>
                 <div className="p-4 border rounded hover:bg-gray-50 cursor-pointer">❓<br />Exam</div>
                 <div className="p-4 border rounded hover:bg-gray-50 cursor-pointer">🎥<br />Live class</div>
                 <div className="p-4 border rounded hover:bg-gray-50 cursor-pointer">💻<br />Html material</div>
-                <div className="p-4 border rounded hover:bg-gray-50 cursor-pointer">▶️<br />YouTube</div>
                 <div className="p-4 border rounded hover:bg-gray-50 cursor-pointer">🎬<br />Vimeo</div>
                 <div className="p-4 border rounded hover:bg-gray-50 cursor-pointer">📚<br />Flipbook</div>
               </div>
@@ -149,28 +183,27 @@ const CourseContent = () => {
         </div>
       )}
 
-      {/* Lesson Modal */}
-      {showLessonModal && (
+      {showChapterModal && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-md w-full max-w-md space-y-4 shadow-lg">
-            <h2 className="text-lg font-semibold">Add lesson</h2>
+            <h2 className="text-lg font-semibold">Add Chapter</h2>
             <input
               type="text"
               className="w-full border rounded px-3 py-2"
               placeholder="e.g: Intro to ux design"
-              value={newLessonTitle}
+              value={newChapterTitle}
               maxLength={90}
-              onChange={(e) => setNewLessonTitle(e.target.value)}
+              onChange={(e) => setNewChapterTitle(e.target.value)} 
             />
             <div className="flex justify-end space-x-2">
               <button
-                onClick={() => setShowLessonModal(false)}
+                onClick={() => setShowChapterModal(false)} 
                 className="px-4 py-2 bg-gray-200 rounded"
               >
                 Cancel
               </button>
               <button
-                onClick={handleAddLesson}
+                onClick={handleAddChapter} 
                 className="px-4 py-2 bg-gray-500 text-white rounded"
               >
                 Create

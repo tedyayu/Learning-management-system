@@ -99,3 +99,23 @@ export const fetchEnrolledUsers = async (courseId) => {
     throw error;
   }
 };
+
+export const createChapter = async (courseId, chapterData) => {
+  console.log("course if from frontend api", courseId);
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/course/${courseId}/createChapter`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(chapterData),
+    });
+    if (!response.ok) {
+      throw new Error('Failed to create chapter');
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('There was an error creating the chapter!', error);
+    throw error;
+  }
+};
