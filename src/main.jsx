@@ -36,7 +36,8 @@ import MyDashboard from "./components/instractor/MyDashboard";
 import CourseContent from "./components/instractor/CourseContent";
 import CreateAssignment from "./components/instractor/CreateAssignment";
 import CreateLesson from "./components/instractor/CreateLesson";
-import AddYoutubeVideo from "./components/instractor/AddYouTubeVideo";
+import LessonPage from "./components/instractor/LessonPage";
+import CourseDetailPage from "./pages/studentPages/CourseDetailPage.jsx";
 
 
 createRoot(document.getElementById("root")).render(
@@ -48,6 +49,7 @@ createRoot(document.getElementById("root")).render(
           <Route path="/loginPage" element={<LoginPage />} />
           <Route path="/Overview" element={<Overview />} />
           <Route path="/GradesPage" element={<GradesPage />} />
+          <Route path="/course/:courseId" element={<CourseDetailPage />} />
           <Route path="/AdminDashboard" element={<AdminDashboard />}>
             <Route index element={<Dashboard />} />
             <Route path="student-management" element={<RegisterStudent />} />
@@ -66,9 +68,10 @@ createRoot(document.getElementById("root")).render(
             <Route index element={<MyDashboard />} />
             <Route path="mycourses" element={<MyCourses />} />
             <Route path="mycourses/:courseId" element={<CourseContent/>}/>
-            <Route path="mycourses/:courseId/create-assignment" element={<CreateAssignment />} />
-            <Route path="mycourses/:courseId/create-lesson" element={<CreateLesson />} />
-            <Route path="mycourses/:courseId/create-video" element={<AddYoutubeVideo />} />
+            <Route path="mycourses/:courseId/lesson/:lessonId" element={<LessonPage />} />
+            <Route path="mycourses/:courseId/create-assignment/:showContentFormId" element={<CreateAssignment />} />
+            <Route path="mycourses/:courseId/create-lesson/:showContentFormId" element={<CreateLesson />} />
+            <Route path="mycourses/:courseId/lesson/:lessonId/edit-lesson" element={<CreateLesson />}/>
             <Route path="announcements" element={<Announcements />} />
             <Route path="withdrawals" element={<Withdrawals />} />
             <Route path="quiz-attempts" element={<QuizAttempts />} />

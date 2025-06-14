@@ -119,3 +119,46 @@ export const createChapter = async (courseId, chapterData) => {
     throw error;
   }
 };
+
+export const createLesson = async (lessonData, chapterId) => {
+
+  console.log("lesson data from frontend api", lessonData);
+  console.log("chapter id from frontend api", chapterId);
+  
+  try {
+    
+    const response = await fetch(`${API_BASE_URL}/api/course/${chapterId}/createLesson`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(lessonData),
+    });
+    if (!response.ok) {
+      throw new Error('Failed to create lesson');
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('There was an error creating the lesson!', error);
+    throw error;
+  }
+};
+
+export const updateLesson = async (lessonId, lessonData) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/course/updateLesson/${lessonId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(lessonData),
+    });
+    if (!response.ok) {
+      throw new Error('Failed to update lesson');
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('There was an error updating the lesson!', error);
+    throw error;
+  }
+};

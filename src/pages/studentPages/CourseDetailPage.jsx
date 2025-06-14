@@ -6,15 +6,19 @@ import Login from '../../components/Login'
 import SubHeader from '../../components/SubHeader'
 import Courses from '../../components/Courses'
 import CourseCategory from '../../components/CourseCategory'
-import CourseOverview from '../../components/CourseOverview'
 import Footer from '../../components/Footer'
 import SiteNews from '../../components/SiteNews'
+import CourseDetailsList from '../../components/student/CourseDetailsList'
 import {AuthContext } from '../../context/AuthContext'
+import { useLocation } from 'react-router-dom';
 
-const Home = () => {
+const CourseDetailPage = () => {
 
-  const {user,setUser}=useContext(AuthContext);
-  
+  const {setUser}=useContext(AuthContext);
+  //const { courseId } = useParams();
+  const location = useLocation();
+  const user = location.state?.user;
+
 
   return (
     <div className="h-screen flex flex-col">
@@ -27,7 +31,7 @@ const Home = () => {
         </div>
         <div className="w-full flex  pr-10 flex-col m-5">
             {user  ? (
-              <CourseOverview user={user}/>
+              <CourseDetailsList user={user}/>
             ):(
               <>
                 <Courses/>
@@ -51,4 +55,4 @@ const Home = () => {
   )
 }
 
-export default Home;
+export default CourseDetailPage;

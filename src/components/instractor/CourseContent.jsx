@@ -1,9 +1,12 @@
 import { useState,useEffect} from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import {createChapter, fetchSingleCourse} from '../../utils/course.api'; // Assuming you have an API function to create a chapter
+import {createChapter, fetchSingleCourse} from '../../utils/course.api'; 
+
+
+
 
 const CourseContent = () => {
-  const [chapters, setChapters] = useState([]); 
+  const [chapters, setChapters] = useState([]);
   const [showChapterModal, setShowChapterModal] = useState(false);
   const [courseTitle, setCourseTitle] = useState(''); 
   const [showContentFormId, setShowContentFormId] = useState(null);
@@ -15,6 +18,7 @@ const CourseContent = () => {
     const fetchCourse = async () => {
       try {
         const course = await fetchSingleCourse(courseId); 
+        console.log('Fetched course:', course);
         setCourseTitle(course.name); 
         setChapters(course.Chapter || []);
       } catch (error) {
@@ -34,7 +38,7 @@ const CourseContent = () => {
     }
 
     const newChapter = {
-      title: newChapterTitle, 
+      title: newChapterTitle,
     };
 
 
@@ -108,7 +112,22 @@ const CourseContent = () => {
             <span className="mx-2 text-gray-500">or</span>
             <button className="text-gray-700 text-sm">Add topic</button>
           </div>
+          <div className="pl-8 mt-4">
+            <h3 className="text-sm font-medium mb-2">Lessons:</h3>
+            {chapter.lessons && chapter.lessons.length > 0 ? (
+              <ul className="list-disc list-inside space-y-1">
+                {chapter.lessons.map((lesson) => (
+                  <li key={lesson.id} className="text-sm text-gray-700 cursor-pointer hover:underline" onClick={() => navigate(`/InstractorDashboard/mycourses/${courseId}/lesson/${lesson.id}`,{ state: { lesson }}) }>
+                    {lesson.title}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-sm text-gray-500">No lessons available.</p>
+            )}
         </div>
+        </div>
+        
       ))}
 
       {/* Content Form Modal */}
@@ -150,7 +169,7 @@ const CourseContent = () => {
               <div className="grid grid-cols-3 gap-4 text-sm text-center">
                 <div
                   className="p-4 border rounded hover:bg-gray-50 cursor-pointer"
-                  onClick={() => navigate(`/InstractorDashboard/mycourses/${courseId}/create-lesson`)}
+                  onClick={() => navigate(`/InstractorDashboard/mycourses/${courseId}/create-lesson/${showContentFormId}`)}
                 >
                   📖<br />
                   Lesson
@@ -158,19 +177,19 @@ const CourseContent = () => {
                 <div
                   className="p-4 border rounded hover:bg-gray-50 cursor-pointer"
                   onClick={() =>
-                    navigate(`/InstractorDashboard/mycourses/${courseId}/create-assignment`)
+                    navigate(`/InstractorDashboard/mycourses/${courseId}/create-assignment/${showContentFormId}`)
                   }
                 >
                   📋<br />
                   Assignment
                 </div>
-                <div
+                {/* <div
                   className="p-4 border rounded hover:bg-gray-50 cursor-pointer"
-                  onClick={() => navigate(`/InstractorDashboard/mycourses/${courseId}/create-video`)}
+                  onClick={() => navigate(`/InstractorDashboard/mycourses/${courseId}/create-video/${showContentFormId}`)}
                 >
                   ▶️<br />
                   YouTube
-                </div>
+                </div> */}
                 <div className="p-4 border rounded hover:bg-gray-50 cursor-pointer">📖<br />Scorm</div>
                 <div className="p-4 border rounded hover:bg-gray-50 cursor-pointer">❓<br />Exam</div>
                 <div className="p-4 border rounded hover:bg-gray-50 cursor-pointer">🎥<br />Live class</div>
