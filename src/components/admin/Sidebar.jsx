@@ -7,12 +7,13 @@ const menuItems = [
   { name: "Instractor Management", icon: <FaUsers />, path: "/AdminDashboard/instructor-management" },
   { name: "Department Management", icon: <FaSchool />, path: "/AdminDashboard/department-management" },
   { name: "Course Management", icon: <FaBook />, path: "/AdminDashboard/course" },
+  { name: "Admin Announcement", icon: <FaBell />, path: "/AdminDashboard/AdminAnnouncements" },
   { name: "Real-Time Features", icon: <FaBroadcastTower />, path: "/AdminDashboard/real-time-features" },
   { name: "Reports & Analytics", icon: <FaChartBar /> , path: "/AdminDashboard/reports-and-analytics"},
   { name: "Security & Authentication", icon: <FaLock /> , path: "/AdminDashboard/security-authentication"},
   { name: "System Settings", icon: <FaCog />, path: "/AdminDashboard/system-settings" },
   { name: "Payment Management", icon: <FaCommentsDollar />, path: "/AdminDashboard/payment-management" },
-  { name: "Notifications & Communication", icon: <FaBell />, path: "/AdminDashboard/notifications-and-communication" },
+  
 ];
 
 export default function Sidebar() {

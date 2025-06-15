@@ -52,13 +52,9 @@ const Header=({isLoggedIn,user,setUser})=>{
  
     const usefulLinks = [
         { href: 'https://nadle.gov.et/', text: 'Ethiopian National Library (NADLE)' },
-        { href: '/amu-research-database', text: 'AMU Research Database Systems' },
         { href: 'https://ocw.mit.edu/', text: 'MIT OCW' },
-        { href: '/amu-digital-library', text: 'AMU Digital Library' },
         { href: '/drs', text: 'Digital Resources Share(DRS)' },
-        { href: '/website', text: 'Website' }, 
-        { href: '/intranet', text: 'Intranet' },
-        { href: '/amu-email', text: 'AMU Email' }, 
+        
     ];
 
 
@@ -94,12 +90,12 @@ const Header=({isLoggedIn,user,setUser})=>{
                         {isLoggedIn ? (
                              <li className="relative"> {/* User profile dropdown */}
                              <div className="flex items-center cursor-pointer" onClick={toggleUserDropdown}>
-                                 <img src="no src" alt="Profile" className="h-8 w-8 rounded-full mr-2" />
+                                 <img src={user.student?.profilePhotoURL} alt="Profile" className="h-8 w-8 rounded-full mr-2" />
                                  <span>{user.username}</span>
                                  <span className="cursor-pointer flex items-center" 
                                 onClick={toggleUserDropdown}>▼</span> {/* Dropdown arrow */}
                              
-                             {showUserDropdown && ( 
+                             {showUserDropdown && (
                                  <ul className="absolute top-full right-0 bg-white text-gray-800 rounded-md shadow-lg py-2 w-48 z-50">
                                      <li className='px-4 py-2 hover:bg-gray-100'>
                                          <Link to="/ProfilePage">Profile</Link> 

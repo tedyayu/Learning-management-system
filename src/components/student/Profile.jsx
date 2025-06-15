@@ -1,6 +1,6 @@
 import { useState } from "react"; 
 import { updateProfile ,updatePassword} from '../../utils/api';
-//import {supabase} from '../../utils/SupabaseClient';
+import {supabase} from '../../utils/SupabaseClient';
 
 const Profile = ({ user, setUser }) => {
   const [error, setError] = useState('');
@@ -35,47 +35,47 @@ const Profile = ({ user, setUser }) => {
       [name]: value,
     }));
   };
-  /*
 
-  const uploadImage = async (file) => {
-    const fileName = `${Date.now()}_${file.name}`;
-    console.log("Uploading file:", fileName);
-    const { data, error } = await supabase.storage
-      .from('my-storage')
-      .upload(fileName, file);
 
-    if (error) {
-      console.error("Error uploading image", error);
-      throw error;
-    }
+  const uploadImageToSupabase = async (file) => {
+  const fileName = `${Date.now()}_${file.name}`;
+  console.log("Uploading file:", fileName);
+  const { data, error } = await supabase.storage
+    .from('photos')
+    .upload(fileName, file);
 
-    const { publicURL } = supabase.storage
-      .from('my-storage')
-      .getPublicUrl(fileName);
-    console.log("Image uploaded successfully", publicURL);
-    return publicURL;
-  };
+  if (error) {
+    console.error("Error uploading image", error);
+    throw error;
+  }
 
-  */
+  const { data: urlData } = await supabase.storage
+    .from('photos')
+    .getPublicUrl(fileName);
+  const publicUrl = urlData.publicUrl;
+  console.log("Image uploaded successfully", publicUrl);
+  return publicUrl;
+};
+
+
   const handleProfileSubmit = async (e) => {
     e.preventDefault();
     setError('');
     
     try {
-      /*
-      let profilePhotoUrl = profileData.profilePhoto
+    
+      let profilePhotoUrl = profileData.profilePhoto;
 
-      
-      if(profileData.profilePhoto instanceof File) {
-        profilePhotoUrl = await uploadImage(profileData.profilePhoto);
+      if (profileData.profilePhoto instanceof File) {
+        profilePhotoUrl = await uploadImageToSupabase(profileData.profilePhoto);
       }
 
       const updatedProfileData = {
         ...profileData,
         profilePhoto: profilePhotoUrl,
       };
-      */
-      const response = await updateProfile(profileData);
+
+      const response = await updateProfile(updatedProfileData);
       if (response.error) {
         console.error("Error while updating profile", response.error);
         setError(response.error.message);
@@ -108,7 +108,7 @@ const Profile = ({ user, setUser }) => {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 w-full">
       <form onSubmit={handleProfileSubmit} className="bg-white rounded-lg shadow-md p-6 mb-4">
         <h2 className="text-2xl font-semibold mb-4">Profile</h2>
         {error && <h2 className="text-red-500">{error}</h2>}

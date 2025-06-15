@@ -20,6 +20,7 @@ import CourseDetailsManagment from "./components/admin/CourseDetailsManagment";
 import EnrolledUsers from "./components/admin/EnrolledUsers";
 import CourseEnrollment from "./components/admin/CourseEnrollment";
 import CourseSettings from "./components/admin/CourseSetting";
+import AdminAnnouncements from "./components/admin/Announcement";
 
 import InstractorDashboard from "./pages/instractorPages/InstractorDashboard";
 import MyCourses from "./components/instractor/MyCourses";
@@ -38,6 +39,7 @@ import CreateAssignment from "./components/instractor/CreateAssignment";
 import CreateLesson from "./components/instractor/CreateLesson";
 import LessonPage from "./components/instractor/LessonPage";
 import CourseDetailPage from "./pages/studentPages/CourseDetailPage.jsx";
+import ContentDetailPage from "./pages/studentPages/ContentDetailPage.jsx";
 
 
 createRoot(document.getElementById("root")).render(
@@ -50,12 +52,14 @@ createRoot(document.getElementById("root")).render(
           <Route path="/Overview" element={<Overview />} />
           <Route path="/GradesPage" element={<GradesPage />} />
           <Route path="/course/:courseId" element={<CourseDetailPage />} />
+          <Route path="/ContentDetail/:chapterId" element={<ContentDetailPage />} />
           <Route path="/AdminDashboard" element={<AdminDashboard />}>
             <Route index element={<Dashboard />} />
             <Route path="student-management" element={<RegisterStudent />} />
             <Route path="instructor-management" element={<RegisterInstarctorPage />} />
             <Route path="department-management" element={<Department />} />
             <Route path="course" element={<CourseManagement />} />
+            <Route path="AdminAnnouncements" element={<AdminAnnouncements />} />
             <Route path="content-management" element={<ContentManagement />} />
             <Route path="course/:courseId" element={<CourseDetailsManagment />}/>
             <Route path="course/:courseId/enroll" element={<EnrolledUsers />} />
