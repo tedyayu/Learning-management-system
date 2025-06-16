@@ -103,7 +103,7 @@ const CourseManagement = () => {
             {/* Course Info Section */}
             <div className="flex items-center space-x-4">
               <img
-                src={course.image}
+                src={course.courseImageurl}
                 className="w-20 h-20 rounded-md object-cover"
               />
               <div>

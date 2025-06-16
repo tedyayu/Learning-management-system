@@ -4,7 +4,7 @@ import Navigation from '../../components/Navigation'
 import Announcement from '../../components/Announcement'
 import Login from '../../components/Login'
 import SubHeader from '../../components/SubHeader'
-import Courses from '../../components/Courses'
+import CourseDetail from '../../components/CourseDetail'
 import CourseCategory from '../../components/CourseCategory'
 import CourseOverview from '../../components/CourseOverview'
 import Footer from '../../components/Footer'
@@ -34,7 +34,7 @@ const Home = () => {
                 <CourseOverview user={user}/>
               ):(
                 <>
-                  <Courses/>
+                  <CourseDetail/>
                   <div id="site-news-section">
                     <SiteNews />
                   </div>

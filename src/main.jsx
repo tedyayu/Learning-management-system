@@ -40,6 +40,7 @@ import CreateLesson from "./components/instractor/CreateLesson";
 import LessonPage from "./components/instractor/LessonPage";
 import CourseDetailPage from "./pages/studentPages/CourseDetailPage.jsx";
 import ContentDetailPage from "./pages/studentPages/ContentDetailPage.jsx";
+import CourseDetailHomePage from "./pages/studentPages/CourseDetailHomePage.jsx";
 
 
 createRoot(document.getElementById("root")).render(
@@ -52,6 +53,7 @@ createRoot(document.getElementById("root")).render(
           <Route path="/Overview" element={<Overview />} />
           <Route path="/GradesPage" element={<GradesPage />} />
           <Route path="/course/:courseId" element={<CourseDetailPage />} />
+          <Route path="/course/:courseId/Home" element={<CourseDetailHomePage />} />
           <Route path="/ContentDetail/:chapterId" element={<ContentDetailPage />} />
           <Route path="/AdminDashboard" element={<AdminDashboard />}>
             <Route index element={<Dashboard />} />

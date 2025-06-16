@@ -1,6 +1,7 @@
 import { useState, useContext } from 'react';
 import { DepartmentContext } from '../../context/departmentContext'; 
 import {createCourse} from '../../utils/course.api';
+import { supabase } from '../../utils/SupabaseClient';
 
 const CreateCourses = ({ onClose }) => {
   const { departments } = useContext(DepartmentContext); 
@@ -8,6 +9,7 @@ const CreateCourses = ({ onClose }) => {
   const [formData, setFormData] = useState({
     courseName: '',
     shortDescription: '',
+    courseImage:null,
     credits:'',
     department:'',
     courseCode:'',
@@ -31,18 +33,47 @@ const CreateCourses = ({ onClose }) => {
     });
   };
 
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    setFormData({
-      ...formData,
-      image: file ? URL.createObjectURL(file) : null,
-    });
+ const handleImageUpload = (e) => {
+  const file = e.target.files[0];
+  setFormData({
+    ...formData,
+    image: file ? URL.createObjectURL(file) : null,
+    courseImage: file,
+  });
+};
+  const uploadImageToSupabase = async (file) => {
+    const fileName = `${Date.now()}_${file.name}`;
+    console.log("Uploading file:", fileName);
+    const { data, error } = await supabase.storage
+      .from('photos')
+      .upload(fileName, file);
+  
+    if (error) {
+      console.error("Error uploading image", error);
+      throw error;
+    }
+  
+    const { data: urlData } = await supabase.storage
+      .from('photos')
+      .getPublicUrl(fileName);
+    const publicUrl = urlData.publicUrl;
+    console.log("Image uploaded successfully", publicUrl);
+    return publicUrl;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await createCourse(formData);
+      let coursePhotoUrl= formData.courseImage;
+      if (formData.courseImage instanceof File) {
+        coursePhotoUrl = await uploadImageToSupabase(formData.courseImage);
+      }
+
+      const updatedData={
+        ...formData,
+        courseImage: coursePhotoUrl,
+      }
+      const response = await createCourse(updatedData);
       if (response.status === 200) {
         alert('Course created successfully!');
       }

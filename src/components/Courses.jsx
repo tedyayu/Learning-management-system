@@ -1,117 +1,128 @@
-import  { useState } from 'react'
+import { useState, useContext, useEffect } from 'react';
+import { DepartmentContext } from '../context/departmentContext';
+import { useNavigate } from 'react-router-dom';
+
 
 const Courses = () => {
-        const [expanded, setExpanded] = useState({
-        underGraduate: true,
-        postGraduate:true
+  const { departments } = useContext(DepartmentContext);
+  const [expanded, setExpanded] = useState({});
+  const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
+
+  // Always open all collapses when departments change
+  useEffect(() => {
+    if (departments && departments.length > 0) {
+      const allOpen = {};
+      departments.forEach(dep => {
+        const deptId = dep.id || dep._id;
+        allOpen[deptId] = true;
       });
-      const [searchTerm,setSearchTerm]=useState('');
+      setExpanded(allOpen);
+    }
+  }, [departments]);
 
-      const handleInputChange = (event) => {
-        setSearchTerm(event.target.value);
-      };
-      const handleSearch = () => {
-        console.log('Searching for:', searchTerm);
-      };
+  const handleInputChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
 
-      const toggleExpand = (group) => {
-        setExpanded((prev) => ({ ...prev, [group]: !prev[group] }));
-      };
+  const handleSearch = () => {
+    console.log('Searching for:', searchTerm);
+  };
 
-      const underGraduateStudies = [
-        "Arba Minch Institute of Technology",
-        "Arba Minch Water Technology Institute",
-        "College of Agricultural Sciences",
-        "College of Business and Economics",
-        "College of Natural Sciences",
-        "College of Social Sciences and Humanities",
-        "School of Law",
-        "School of Pedagogical and Behavioral Sciences",
-        "Sawla Campus",
-      ];
+  const toggleExpand = (deptId) => {
+    setExpanded((prev) => ({ ...prev, [deptId]: !prev[deptId] }));
+  };
 
-      const postGraduateStudies = [
-        "Arba Minch Institute of Technology",
-        "Arba Minch Water Technology Institute",
-        "College of Agricultural Sciences",
-        "College of Business and Economics",
-        "College of Natural Sciences",
-        "College of Social Sciences and Humanities",
-        "School of Law",
-        "School of Pedagogical and Behavioral Sciences",
-        "Sawla Campus",
-      ];
   return (
-    <div>
-        <div className="container mx-auto py-8 w-full ml-8"> 
-            <h2 className="text-2xl font-bold mb-4">Courses</h2>
-            <div className="mb-4">
-                <div 
-                    className="flex items-center justify-between cursor-pointer"
-                    onClick={() => toggleExpand("underGraduate")}
-                    >
-                    <h3 className="text-xl font-semibold">Under Graduate Studies</h3>
-                    <span className="text-gray-500">
-                        {expanded.underGraduate ? "▼" : "►"} Collapse all
-                    </span>
-                </div>
-                {expanded.underGraduate && (
-                <ul className="mt-2 ml-6">
-                    {underGraduateStudies.map((course, index) => (
-                    <li key={index} className="py-1">
-                        <a href="#" className="text-blue-500 hover:underline">
-                        {course}
-                        </a>
-                    </li>
-                    ))}
-                </ul>
-                )}
-                <div 
-                    className="flex items-center justify-between cursor-pointer"
-                    onClick={() => toggleExpand("postGraduate")}
-                    >
-                    <h3 className="text-xl font-semibold">post Graduate Studies</h3>
-                    <span className="text-gray-500">
-                        {expanded.postGraduate ? "▼" : "►"} Collapse all
-                    </span>
-                </div>
-                {expanded.postGraduate && (
-                <ul className="mt-2 ml-6">
-                    {postGraduateStudies.map((course, index) => (
-                    <li key={index} className="py-1">
-                        <a href="#" className="text-blue-500 hover:underline">
-                        {course}
-                        </a>
-                    </li>
-                    ))}
-                </ul>
-                )}
-            </div>
-            <div className="mb-4">
-                <label htmlFor="courseSearch" className="block text-sm font-medium text-gray-700">
-                    Search courses
-                </label>
-                <div className="flex"> {/* Flexbox for horizontal alignment */}
-                    <input
-                    type="text"
-                    id="courseSearch"
-                    placeholder="Enter course name"
-                    value={searchTerm}
-                    onChange={handleInputChange}
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline flex-grow mr-2" // Tailwind classes
-                    />
-                    <button
-                    onClick={handleSearch}
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" // Tailwind classes
-                    >
-                    Go
-                    </button>
-                    <span className="ml-2 text-blue-500 cursor-pointer">?</span> {/* Tailwind classes */}
-                </div>
-            </div>
-        </div>
-    </div>
-  )
-}
+    <div className=" min-h-screen py-8 px-6">
+      <div className="max-w-7xl mx-auto">
+        <h2 className="text-3xl font-bold text-800 mb-6">Departments and Courses</h2>
 
-export default Courses
+        {/* Search Input */}
+        <div className="mb-6">
+          <label htmlFor="courseSearch" className="block text-md font-medium text-gray-700 mb-1">
+            Search Courses
+          </label>
+          <div className="flex items-center">
+            <input
+              type="text"
+              id="courseSearch"
+              placeholder="Enter course name"
+              value={searchTerm}
+              onChange={handleInputChange}
+              className="shadow-sm border border-gray-300 rounded-lg py-2 px-4 w-full focus:ring-500 focus:border-500"
+            />
+            <button
+              onClick={handleSearch}
+              className="ml-3 bg-600 text-white px-5 py-2 rounded-lg hover:bg-700"
+            >
+              Go
+            </button>
+          </div>
+        </div>
+
+        {departments && departments.length > 0 ? (
+          departments.map((department) => {
+            const deptId = department.id || department._id;
+            return (
+              <div key={deptId} className="mb-10">
+                <div
+                  className="flex justify-between items-center cursor-pointer bg-gray-200 px-4 py-3 rounded-lg"
+                  onClick={() => toggleExpand(deptId)}
+                >
+                  <h3 className="text-xl font-semibold text-900">{department.name}</h3>
+                  <span className="text-700 font-medium">
+                    {expanded[deptId] ? "▼ Collapse" : "► Expand"}
+                  </span>
+                </div>
+
+                {expanded[deptId] && (
+                  <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-8">
+                    {Array.isArray(department.courses) && department.courses.length > 0 ? (
+                      department.courses.map((course, index) => (
+                        <div
+                          key={course.id || course._id || index}
+                          className="relative bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-shadow duration-300 overflow-hidden group border border-purple-100"
+                        >
+                          <div className="relative">
+                            <img
+                              src={course.courseImageurl || "https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=400&q=80"}
+                              alt={course.name}
+                              className="h-44 w-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            />
+                            <div className="absolute top-3 right-3 bg-purple-600 text-white text-xs px-3 py-1 rounded-full shadow font-semibold uppercase tracking-wide">
+                              {course.level || "Course"}
+                            </div>
+                          </div>
+                          <div className="p-5 flex flex-col h-40">
+                            <h5 className="text-l font-bold text-gray-800 mb-2 ">
+                              {course.name}
+                            </h5>
+                           <div className="mt-auto flex items-center justify-between">
+                            <button
+                              onClick={() => navigate(`/course/${course.id}/Home`, { state: { course } })}
+                              className="inline-block bg-gradient-to-r from-purple-500 to-blue-500 text-white px-4 py-2 rounded-lg font-semibold shadow hover:from-purple-600 hover:to-blue-600 transition text-sm"
+                            >
+                              View Details
+                            </button>
+                          </div>
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-gray-500 col-span-full">No courses available.</p>
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+          })
+        ) : (
+          <p className="text-gray-600">No departments found.</p>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default Courses;

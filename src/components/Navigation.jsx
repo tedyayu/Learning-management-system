@@ -1,12 +1,14 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Navigation = ({ isLoggedIn, user }) => {
+
+  const navigate = useNavigate();
+
   const [isExpanded, setIsExpanded] = useState({
     home: true,
     siteNews: false,
     courses: false,
-    // Use courseDetails as an object to track expanded state per course
     courseDetails: {},
   });
 
@@ -32,12 +34,21 @@ const Navigation = ({ isLoggedIn, user }) => {
             onClick={() => toggleExpand('home')}
             className="flex justify-between items-center w-full p-2 bg-gray-700 rounded text-white"
           >
-            Home {isExpanded.home ? '-' : '+'}
+            Home 
           </button>
           {isExpanded.home && (
             <ul className="mt-2 ml-4">
-              <li className="p-2 bg-gray-200 rounded mb-1 hover:bg-gray-300">
-                Site news
+              <li
+                className="p-2 bg-gray-200 rounded mb-1 hover:bg-gray-300 cursor-pointer"
+                onClick={() => {
+                  navigate("/");
+                  setTimeout(() => {
+                    const el = document.getElementById("site-news-section");
+                    if (el) el.scrollIntoView({ behavior: "smooth" });
+                  }, 100); 
+                }}
+              >
+                Admin news
               </li>
               <li className="p-2 bg-gray-200 rounded hover:bg-gray-300">
                 Courses
@@ -47,25 +58,10 @@ const Navigation = ({ isLoggedIn, user }) => {
         </li>
         <li className="mb-2">
           <button
-            onClick={() => toggleExpand('siteNews')}
-            className="flex justify-between items-center w-full p-2 bg-gray-700 rounded text-white"
-          >
-            Site news {isExpanded.siteNews ? '-' : '+'}
-          </button>
-          {isExpanded.siteNews && (
-            <ul className="mt-2 ml-4">
-              <li className="p-2 bg-gray-200 rounded hover:bg-gray-300">
-                Site news details
-              </li>
-            </ul>
-          )}
-        </li>
-        <li className="mb-2">
-          <button
             onClick={() => toggleExpand('courses')}
             className="flex justify-between items-center w-full p-2 bg-gray-700 rounded text-white"
           >
-            Courses {isExpanded.courses ? '-' : '+'}
+            Courses
           </button>
           {isExpanded.courses && (
   <>

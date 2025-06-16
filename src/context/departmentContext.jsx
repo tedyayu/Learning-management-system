@@ -11,6 +11,7 @@ export const DepartmentProvider = ({ children }) => {
       try {
         const data = await fetchDepartments();
         setDepartments(data);
+
       } catch (error) {
         console.error('There was an error fetching the departments!', error);
       } 
@@ -19,7 +20,9 @@ export const DepartmentProvider = ({ children }) => {
     getDepartments();
   }, []);
   
-
+useEffect(() => {
+    console.log("Fetched departments:", departments);
+  }, [departments]);
   return (
     <DepartmentContext.Provider value={{ departments, setDepartments }}>
       {children}
