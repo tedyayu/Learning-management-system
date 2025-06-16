@@ -85,3 +85,50 @@ export const searchUsers = async (query) => {
     });
     return response.json();
 };
+
+export const submitAnnouncement = async (announcement) => {
+    const response = await fetch(`${API_BASE_URL}/api/admin/adminAnnouncement`, {
+        method: "POST",
+        body: JSON.stringify({announcement}),
+        headers: {
+            "Content-Type": "application/json"
+        },
+        credentials: "include"
+    });
+    return response.json();
+}
+
+export const getAnnouncements = async () => {
+    const response = await fetch(`${API_BASE_URL}/api/admin/adminAnnouncements`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        credentials: "include"
+    });
+    return response.json();
+};
+
+export const updateAnnouncement = async (id, announcement) => {
+    const response = await fetch(`${API_BASE_URL}/api/admin/adminAnnouncement/${id}`, {
+        method: "PUT",
+        body: JSON.stringify(announcement),
+        headers: {
+            "Content-Type": "application/json"
+        },
+        credentials: "include"
+    });
+    return response.json();
+};
+
+export const updateNest = async (userId, lessonId, courseId) => {
+    const response = await fetch(`${API_BASE_URL}/api/course/complete`, {
+        method: "POST",
+        body: JSON.stringify({ userId, lessonId, courseId }),
+        headers: {
+            "Content-Type": "application/json"
+        },
+        credentials: "include"
+    });
+    return response.json();
+}

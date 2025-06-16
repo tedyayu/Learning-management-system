@@ -1,6 +1,35 @@
+import { useState } from 'react';
+import { updateNest } from '../../utils/api';
 
-export default function ContentDescription({ lesson, onNext, onPrevious, hasNext, hasPrevious }) {
-   const getYouTubeEmbedUrl = (url) => {
+
+export default function ContentDescription({ lesson, onNext, onPrevious, hasNext, hasPrevious , userId, course}) {
+  const [progress, setProgress] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false); 
+
+  const handleNext = async () => {
+    if (!lesson || !userId || !course.id) return;
+
+    setIsSubmitting(true);
+
+    try {
+      const res = await updateNest(userId, lesson.id, course.id)
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setProgress(data.progress);
+        onNext();
+      } else {
+        console.error("Failed to update progress", data);
+      }
+    } catch (error) {
+      console.error("Error updating lesson completion", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+  
+  const getYouTubeEmbedUrl = (url) => {
     if (!url) return '';
     const match = url.match(/(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([^&]+)/) || 
                   url.match(/(?:https?:\/\/)?youtu\.be\/([^?]+)/);
@@ -38,7 +67,7 @@ export default function ContentDescription({ lesson, onNext, onPrevious, hasNext
               Previous
             </button>
             <button
-              onClick={onNext}
+              onClick={handleNext}
               disabled={!hasNext}
               className={`px-4 py-2 rounded ${
                 hasNext ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-600 cursor-not-allowed'
@@ -47,6 +76,19 @@ export default function ContentDescription({ lesson, onNext, onPrevious, hasNext
               Next
             </button>
           </div>
+          {progress !== null && (
+            <div className="mt-6">
+              <div className="text-sm text-gray-700 mb-1">
+                Progress: {progress.toFixed(1)}%
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-4">
+                <div
+                  className="bg-green-500 h-4 rounded-full transition-all duration-500 ease-in-out"
+                  style={{ width: `${progress}%` }}
+                ></div>
+              </div>
+            </div>
+          )}
         </div>
       ) : (
         <p className="text-gray-500">Select a lesson to view its content.</p>

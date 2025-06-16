@@ -9,7 +9,6 @@ const Courses = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
 
-  // Always open all collapses when departments change
   useEffect(() => {
     if (departments && departments.length > 0) {
       const allOpen = {};
@@ -100,7 +99,7 @@ const Courses = () => {
                             </h5>
                            <div className="mt-auto flex items-center justify-between">
                             <button
-                              onClick={() => navigate(`/course/${course.id}/Home`, { state: { course } })}
+                              onClick={() => navigate(`/course/${course.id}/Home`, { state: { course , department } })}
                               className="inline-block bg-gradient-to-r from-purple-500 to-blue-500 text-white px-4 py-2 rounded-lg font-semibold shadow hover:from-purple-600 hover:to-blue-600 transition text-sm"
                             >
                               View Details

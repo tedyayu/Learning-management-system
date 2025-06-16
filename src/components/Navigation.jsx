@@ -50,7 +50,13 @@ const Navigation = ({ isLoggedIn, user }) => {
               >
                 Admin news
               </li>
-              <li className="p-2 bg-gray-200 rounded hover:bg-gray-300">
+              <li className="p-2 bg-gray-200 rounded hover:bg-gray-300" onClick={() => {
+                  navigate("/");
+                  setTimeout(() => {
+                    const el = document.getElementById("courses");
+                    if (el) el.scrollIntoView({ behavior: "smooth" });
+                  }, 100); 
+                }}>
                 Courses
               </li>
             </ul>

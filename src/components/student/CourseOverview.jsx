@@ -4,13 +4,13 @@ import { useNavigate } from "react-router-dom";
 const CourseOverview = ({ user }) => {
   const navigate = useNavigate();
 
-   const handleCourseClick = (course) => {
-    navigate(`/course/${course.id}`, { state: { user } });
+   const handleCourseClick = (course, userId) => {
+    navigate(`/course/${course.id}`, { state: { course , userId } });
   };
 
   return (
     <div className="container mx-auto py-8">
-      <h3 className="font-sans text-2xl font-semibold mb-6">Course Overview</h3>
+      <h3 className="font-sans text-2xl font-semibold mb-6">Courses I'm Taking</h3>
 
       {/* Filter and Sort Controls */}
       <div className="flex items-center justify-between mb-6">
@@ -38,9 +38,8 @@ const CourseOverview = ({ user }) => {
               <div
                 key={index}
                 className="bg-white rounded-lg overflow-hidden shadow hover:shadow-md transition-shadow duration-300"
-                onClick={() => handleCourseClick(course)}
+                onClick={() => handleCourseClick(course , user.id)}
               >
-                {/* Placeholder for image or pattern */}
                 <div className="h-32 bg-gradient-to-br from-gray-200 to-gray-300"></div>
 
                 <div className="p-4">

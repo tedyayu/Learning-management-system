@@ -13,6 +13,8 @@ const ContentDetail = () => {
   const {user ,setUser}=useContext(AuthContext);
   const location = useLocation();
   const chapter = location.state?.chapter;
+  const userId = location.state?.userId;
+  const course= location.state?.course;
   const [selectedLesson, setSelectedLesson] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(null);
 
@@ -44,11 +46,15 @@ const ContentDetail = () => {
         </div>
         <div className="w-3/5 flex flex-col m-5">
             {
-              <ContentDescription lesson={selectedLesson}
-            onNext={handleNext}
-            onPrevious={handlePrevious}
-            hasNext={currentIndex < chapter.lessons.length - 1}
-            hasPrevious={currentIndex > 0}/>
+              <ContentDescription
+                lesson={selectedLesson}
+                onNext={handleNext}
+                onPrevious={handlePrevious}
+                hasNext={currentIndex < chapter.lessons.length - 1}
+                hasPrevious={currentIndex > 0}
+                userId={userId}
+                course={course}
+              />
             }
         </div>
         <div className="w-2/5 flex items-end justify-start  flex-col"> {/* Added padding right */}

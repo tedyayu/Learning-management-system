@@ -44,9 +44,10 @@ const LessonPage = () => {
             Edit
           </button>
         </div>
+        
 
         <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-800 mb-2">Lesson Details</h2>
+          <h2 className="text-xl font-semibold text-gray-800 mb-2">Lesson Content</h2>
             <div
             className="text-gray-700 leading-relaxed"
             dangerouslySetInnerHTML={{ __html: lesson.content }}

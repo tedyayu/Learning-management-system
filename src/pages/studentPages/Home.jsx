@@ -1,12 +1,12 @@
 import {useContext} from 'react'
 import Header from '../../components/Header'
 import Navigation from '../../components/Navigation'
-import Announcement from '../../components/Announcement'
+import Announcement from '../../components/student/Announcement'
 import Login from '../../components/Login'
 import SubHeader from '../../components/SubHeader'
 import Courses from '../../components/Courses'
 import CourseCategory from '../../components/CourseCategory'
-import CourseOverview from '../../components/CourseOverview'
+import CourseOverview from '../../components/student/CourseOverview'
 import Footer from '../../components/Footer'
 import SiteNews from '../../components/SiteNews'
 import {AuthContext } from '../../context/AuthContext'
@@ -34,7 +34,7 @@ const Home = () => {
                 <CourseOverview user={user}/>
               ):(
                 <>
-                  <Courses/>
+                  <Courses id="courses"/>
                   <div id="site-news-section">
                     <SiteNews />
                   </div>

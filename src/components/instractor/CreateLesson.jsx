@@ -7,7 +7,7 @@ import { Button } from "primereact/button";
 import { Chips } from "primereact/chips";
 import { ProgressSpinner } from "primereact/progressspinner";
 import { Toast } from "primereact/toast";
-import { createLesson ,updateLesson} from "../../utils/course.api";
+import { createLesson, updateLesson } from "../../utils/course.api";
 
 const CreateLesson = () => {
   const { showContentFormId } = useParams();
@@ -15,12 +15,11 @@ const CreateLesson = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Retrieve lesson data and mode from location state
   const { lesson, mode } = location.state || {};
   const isEditMode = mode === "edit";
 
-  // State variables
   const [lessonName, setLessonName] = useState("");
+  const [description, setDescription] = useState(""); // renamed
   const [lessonContent, setLessonContent] = useState("");
   const [lessonOrder, setLessonOrder] = useState(1);
   const [duration, setDuration] = useState("");
@@ -32,10 +31,10 @@ const CreateLesson = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
-  // Pre-fill form fields in Edit Mode
   useEffect(() => {
     if (isEditMode && lesson) {
       setLessonName(lesson.title || "");
+      setDescription(lesson.description || "");
       setLessonContent(lesson.content || "");
       setLessonOrder(lesson.order || 1);
       setDuration(lesson.duration || "");
@@ -47,11 +46,11 @@ const CreateLesson = () => {
     }
   }, [isEditMode, lesson]);
 
-  // Validate form fields
   const validateForm = () => {
     const newErrors = {};
     if (!lessonName.trim()) newErrors.lessonName = "Lesson name is required.";
     if (!lessonContent.trim()) newErrors.lessonContent = "Lesson content is required.";
+    if (!description.trim()) newErrors.description = "Lesson description is required.";
     if (!videoTitle.trim()) newErrors.videoTitle = "Video title is required.";
     if (!youtubeUrl.trim()) newErrors.youtubeUrl = "YouTube URL is required.";
     if (lessonOrder < 1) newErrors.lessonOrder = "Order must be a positive number.";
@@ -59,7 +58,6 @@ const CreateLesson = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Handle Save (Create or Update)
   const handleSaveLesson = async () => {
     if (!validateForm()) {
       toast.current.show({
@@ -74,6 +72,7 @@ const CreateLesson = () => {
     setIsLoading(true);
     const newLesson = {
       name: lessonName,
+      description, // now matches Prisma model
       content: lessonContent,
       order: lessonOrder,
       duration,
@@ -88,7 +87,6 @@ const CreateLesson = () => {
 
     try {
       if (isEditMode) {
-        // Update existing lesson
         await updateLesson(lesson.id, newLesson);
         toast.current.show({
           severity: "success",
@@ -97,7 +95,6 @@ const CreateLesson = () => {
           life: 3000,
         });
       } else {
-        // Create new lesson
         await createLesson(newLesson, showContentFormId);
         toast.current.show({
           severity: "success",
@@ -106,7 +103,7 @@ const CreateLesson = () => {
           life: 3000,
         });
       }
-      navigate(-1); // Navigate back to the previous page
+      navigate(-1);
     } catch (error) {
       toast.current.show({
         severity: "error",
@@ -119,14 +116,12 @@ const CreateLesson = () => {
     }
   };
 
-  // Handle Cancel
   const handleCancel = () => {
     if (window.confirm("Are you sure you want to cancel?")) {
-      navigate(-1); // Navigate back to the previous page
+      navigate(-1);
     }
   };
 
-  // Handle Image Upload
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -168,7 +163,6 @@ const CreateLesson = () => {
         {errors.lessonOrder && <small className="p-error">{errors.lessonOrder}</small>}
       </div>
 
-
       <div>
         <label className="block text-sm font-medium mb-1 text-gray-700">Estimated Duration</label>
         <InputText
@@ -177,6 +171,19 @@ const CreateLesson = () => {
           className="w-full"
           placeholder="e.g., 30 minutes"
         />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium mb-1 text-gray-700">
+          Lesson Description<span className="text-red-500">*</span>
+        </label>
+        <Editor
+          value={description}
+          onTextChange={(e) => setDescription(e.htmlValue || "")}
+          style={{ height: "300px" }}
+          className={errors.description ? "p-invalid" : ""}
+        />
+        {errors.description && <small className="p-error">{errors.description}</small>}
       </div>
 
       <div>
