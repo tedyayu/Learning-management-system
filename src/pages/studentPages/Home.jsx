@@ -12,7 +12,6 @@ import SiteNews from '../../components/SiteNews'
 import {AuthContext } from '../../context/AuthContext'
 import { DepartmentProvider } from "../../context/departmentContext";
 
-
 const Home = () => {
 
   const {user,setUser}=useContext(AuthContext);
@@ -30,22 +29,21 @@ const Home = () => {
             <Announcement /> 
           </div>
           <div className="w-full flex  pr-10 flex-col m-5">
-              {user  ? (
-                <CourseOverview user={user}/>
-              ):(
-                <>
-                  <Courses id="courses"/>
-                  <div id="site-news-section">
-                    <SiteNews />
-                  </div>
-                </>
+              {user ? (
+              <CourseOverview user={user} />
+              ) : (
+                <Courses id="courses" />
               )}
-            
-              
+
+              <div id="site-news-section">
+                <SiteNews />
+                
+              </div>
+      
           </div>
           <div className="w-2/5 flex items-end justify-start pr-4 flex-col"> {/* Added padding right */}
               {user ? (
-                <CourseCategory/>
+               <CourseCategory/>
               ):(
                 <Login />
               )}

@@ -46,58 +46,58 @@ import {AnnouncementProvider} from "./context/AnnouncmentContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <AnnouncementProvider>
-      <AuthProvider>
-        <Router>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/loginPage" element={<LoginPage />} />
-            <Route path="/Overview" element={<Overview />} />
-            <Route path="/GradesPage" element={<GradesPage />} />
-            <Route path="/course/:courseId" element={<CourseDetailPage />} />
-            <Route path="/course/:courseId/Home" element={<CourseDetailHomePage />} />
-            <Route path="/ContentDetail/:chapterId" element={<ContentDetailPage />} />
-            <Route path="/AdminDashboard" element={<AdminDashboard />}>
-              <Route index element={<Dashboard />} />
-              <Route path="student-management" element={<RegisterStudent />} />
-              <Route path="instructor-management" element={<RegisterInstarctorPage />} />
-              <Route path="department-management" element={<Department />} />
-              <Route path="course" element={<CourseManagement />} />
-              <Route path="AdminAnnouncements" element={<AdminAnnouncements />} />
-              <Route path="content-management" element={<ContentManagement />} />
-              <Route path="course/:courseId" element={<CourseDetailsManagment />}/>
-              <Route path="course/:courseId/enroll" element={<EnrolledUsers />} />
-              <Route path="course/:courseId/settings" element={<CourseSettings />} />
-              <Route path="course/:courseId/enroll/user-enrollment" element={<CourseEnrollment />} />
-            </Route>
+      <AnnouncementProvider>
+        <AuthProvider>
+          <Router>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/loginPage" element={<LoginPage />} />
+              <Route path="/Overview" element={<Overview />} />
+              <Route path="/GradesPage" element={<GradesPage />} />
+              <Route path="/course/:courseId" element={<CourseDetailPage />} />
+              <Route path="/course/:courseId/Home" element={<CourseDetailHomePage />} />
+              <Route path="/ContentDetail/:chapterId" element={<ContentDetailPage />} />
+              <Route path="/AdminDashboard" element={<AdminDashboard />}>
+                <Route index element={<Dashboard />} />
+                <Route path="student-management" element={<RegisterStudent />} />
+                <Route path="instructor-management" element={<RegisterInstarctorPage />} />
+                <Route path="department-management" element={<Department />} />
+                <Route path="course" element={<CourseManagement />} />
+                <Route path="AdminAnnouncements" element={<AdminAnnouncements />} />
+                <Route path="content-management" element={<ContentManagement />} />
+                <Route path="course/:courseId" element={<CourseDetailsManagment />}/>
+                <Route path="course/:courseId/enroll" element={<EnrolledUsers />} />
+                <Route path="course/:courseId/settings" element={<CourseSettings />} />
+                <Route path="course/:courseId/enroll/user-enrollment" element={<CourseEnrollment />} />
+              </Route>
 
 
-            <Route path="/InstractorDashboard" element={<InstractorDashboard />}>
-              <Route index element={<MyDashboard />} />
-              <Route path="mycourses" element={<MyCourses />} />
-              <Route path="mycourses/:courseId" element={<CourseContent/>}/>
-              <Route path="mycourses/:courseId/lesson/:lessonId" element={<LessonPage />} />
-              <Route path="mycourses/:courseId/create-assignment/:showContentFormId" element={<CreateAssignment />} />
-              <Route path="mycourses/:courseId/create-lesson/:showContentFormId" element={<CreateLesson />} />
-              <Route path="mycourses/:courseId/lesson/:lessonId/edit-lesson" element={<CreateLesson />}/>
-              <Route path="announcements" element={<Announcements />} />
-              <Route path="withdrawals" element={<Withdrawals />} />
-              <Route path="quiz-attempts" element={<QuizAttempts />} />
-              <Route path="google-meet" element={<GoogleMeet />} />
-              <Route path="assignments" element={<Assignments />} />
-              <Route path="zoom" element={<Zoom />} />
-              <Route path="analytics" element={<Analytics />} />
-              <Route path="settings" element={<Settings />} />
-              
-            </Route>
-            <Route path="Logout" element={<Logout />} />
+              <Route path="/InstractorDashboard" element={<InstractorDashboard />}>
+                <Route index element={<MyDashboard />} />
+                <Route path="mycourses" element={<MyCourses />} />
+                <Route path="mycourses/:courseId" element={<CourseContent/>}/>
+                <Route path="mycourses/:courseId/lesson/:lessonId" element={<LessonPage />} />
+                <Route path="mycourses/:courseId/create-assignment/:showContentFormId" element={<CreateAssignment />} />
+                <Route path="mycourses/:courseId/create-lesson/:showContentFormId" element={<CreateLesson />} />
+                <Route path="mycourses/:courseId/lesson/:lessonId/edit-lesson" element={<CreateLesson />}/>
+                <Route path="announcements" element={<Announcements />} />
+                <Route path="withdrawals" element={<Withdrawals />} />
+                <Route path="quiz-attempts" element={<QuizAttempts />} />
+                <Route path="google-meet" element={<GoogleMeet />} />
+                <Route path="assignments" element={<Assignments />} />
+                <Route path="zoom" element={<Zoom />} />
+                <Route path="analytics" element={<Analytics />} />
+                <Route path="settings" element={<Settings />} />
+                
+              </Route>
+              <Route path="Logout" element={<Logout />} />
 
 
-            <Route path="/ProfilePage" element={<ProfilePage />} />
-            <Route path="/InstractorDashboard" element={<InstractorDashboard />} />
-          </Routes>
-        </Router>
-      </AuthProvider>
-    </AnnouncementProvider>
+              <Route path="/ProfilePage" element={<ProfilePage />} />
+              <Route path="/InstractorDashboard" element={<InstractorDashboard />} />
+            </Routes>
+          </Router>
+        </AuthProvider>
+      </AnnouncementProvider>
   </StrictMode>
 );

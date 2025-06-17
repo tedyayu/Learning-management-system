@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState , useContext, useEffect} from 'react';
 import { updateNest } from '../../utils/api';
 
 
 export default function ContentDescription({ lesson, onNext, onPrevious, hasNext, hasPrevious , userId, course}) {
-  const [progress, setProgress] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false); 
+  const [progress, setProgress] = useState(null);
 
   const handleNext = async () => {
     if (!lesson || !userId || !course.id) return;
@@ -12,12 +12,12 @@ export default function ContentDescription({ lesson, onNext, onPrevious, hasNext
     setIsSubmitting(true);
 
     try {
-      const res = await updateNest(userId, lesson.id, course.id)
+      const data = await updateNest(userId, lesson.id, course.id)
+      
 
-      const data = await res.json();
-
-      if (res.ok) {
-        setProgress(data.progress);
+      if (data) {
+        setProgress(data.Progress);
+        console.log("Progress updated successfully", data.progress);
         onNext();
       } else {
         console.error("Failed to update progress", data);
@@ -76,19 +76,20 @@ export default function ContentDescription({ lesson, onNext, onPrevious, hasNext
               Next
             </button>
           </div>
-          {progress !== null && (
-            <div className="mt-6">
-              <div className="text-sm text-gray-700 mb-1">
-                Progress: {progress.toFixed(1)}%
-              </div>
-              <div className="w-full bg-gray-200 rounded-full h-4">
-                <div
-                  className="bg-green-500 h-4 rounded-full transition-all duration-500 ease-in-out"
-                  style={{ width: `${progress}%` }}
-                ></div>
-              </div>
+          {typeof progress === 'number' && (
+          <div className="mt-6">
+            <div className="text-sm text-gray-700 mb-1">
+              Progress: {progress.toFixed(1)}%
             </div>
-          )}
+            <div className="w-full bg-gray-200 rounded-full h-4">
+              <div
+                className="bg-green-500 h-4 rounded-full transition-all duration-500 ease-in-out"
+                style={{ width: `${progress}%` }}
+              ></div>
+            </div>
+          </div>
+        )}
+
         </div>
       ) : (
         <p className="text-gray-500">Select a lesson to view its content.</p>

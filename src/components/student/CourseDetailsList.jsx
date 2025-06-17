@@ -1,9 +1,27 @@
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 import { useNavigate } from "react-router-dom";
+import { fetchProgressData } from "../../utils/api"; 
+
 
 const CourseDetailsList = ({ course , userId}) => {
   const [activeTab, setActiveTab] = useState("curriculum");
   const navigate = useNavigate();
+  const [progress, setProgress] = useState(0);
+
+   useEffect(() => {
+    const fetchProgress = async () => {
+      if (!userId || !course?.id) return;
+
+      try {
+        const data = await fetchProgressData(userId, course.id);
+        setProgress(Math.round(data.progress || 0));
+      } catch (error) {
+        console.error("Failed to fetch progress", error);
+      }
+    };
+
+    fetchProgress();
+  }, [userId, course?.id]);
 
   if (!course) {
     return <div className="p-6 text-red-600">Course data not available.</div>;
@@ -11,19 +29,19 @@ const CourseDetailsList = ({ course , userId}) => {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Header Section */}
       <div key={course.id} className="bg-gray-800 text-white py-6 px-8">
         <h1 className="text-2xl font-bold">{course.name}</h1>
-        {/* Progress Bar */}
         <div className="mt-4">
           <div className="bg-white h-1 w-full rounded-full">
-            <div className="bg-blue-400 h-1 rounded-full w-full"></div>
+            <div
+              className="bg-blue-400 h-1 rounded-full"
+              style={{ width: `${progress}%` }}
+            ></div>
           </div>
-          <p className="text-xs mt-1">100%</p>
-        </div>
+          <p className="text-xs mt-1">{progress}% completed</p>
+      </div>
       </div>
 
-      {/* Tabs */}
       <div className="border-b border-gray-200 px-8 mt-6">
         <div className="flex space-x-6 text-sm font-medium">
           <button
@@ -49,7 +67,6 @@ const CourseDetailsList = ({ course , userId}) => {
         </div>
       </div>
 
-      {/* Curriculum Content */}
       {activeTab === "curriculum" && (
         <div className="px-8 py-6 space-y-4">
           {Array.isArray(course.Chapter) && course.Chapter.length > 0 ? (
@@ -101,6 +118,7 @@ const CourseDetailsList = ({ course , userId}) => {
         </div>
       )}
     </div>
+    
   );
 };
 

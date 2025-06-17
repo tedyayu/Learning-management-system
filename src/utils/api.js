@@ -132,3 +132,14 @@ export const updateNest = async (userId, lessonId, courseId) => {
     });
     return response.json();
 }
+
+export const fetchProgressData = async (userId, courseId) => {
+    const response = await fetch(`${API_BASE_URL}/api/course/progress/${userId}/${courseId}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        credentials: "include"
+    });
+    return response.json();
+};
