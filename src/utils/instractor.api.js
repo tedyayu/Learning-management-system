@@ -2,11 +2,25 @@ const API_BASE_URL = "http://localhost:5001";
 
 
 export const getInstarctor = async () => {
-    const instractor = await fetch(`${API_BASE_URL}/api/instractor/all`);
+    const instractor = await fetch(`${API_BASE_URL}/api/instractor/all`,{
+        method:"GET",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        credentials: "include"
+    });
     return instractor.json();
 }
 export const getSingleInstarctor = async (id) => {
-    const instractor = await fetch(`${API_BASE_URL}/api/instractor/${id}`);
+    const instractor = await fetch(`${API_BASE_URL}/api/instractor/${id}`,{
+        method:"GET",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        credentials: "include"
+    }
+        
+    );
     return instractor.json();
 }
 export const registerInstractor = async (credentials)=>{
@@ -15,7 +29,8 @@ export const registerInstractor = async (credentials)=>{
         body:JSON.stringify(credentials),
         headers:{
             "Content-Type":"application/json"
-        }
+        },
+        credentials: "include"
     })
     return response.json();
 }
@@ -26,7 +41,9 @@ export const loginInstractor = async (credentials) => {
             body: JSON.stringify(credentials),
             headers: {
                 "Content-Type": "application/json"
-            }
+            },
+            credentials: "include"
+
         });
         return response.json();
     } catch (error) {

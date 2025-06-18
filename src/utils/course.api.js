@@ -8,6 +8,7 @@ export const createCourse = async (formData) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(formData),
+      credentials: "include"
     });
     if (!response.ok) {
       throw new Error('Failed to create the course');
@@ -25,7 +26,8 @@ export const fetchCourses = async () => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-      }
+      },
+      credentials: "include"
     });
     if (!response.ok) {
       throw new Error('Failed to fetch courses');
@@ -44,6 +46,7 @@ export const fetchSingleCourse = async (courseId) => {
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: "include"
     });
     if (!response.ok) {
       throw new Error('Failed to fetch course');
@@ -62,6 +65,7 @@ export const deleteCourse = async (courseId) => {
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: "include"
     });
     if (!response.ok) {
       throw new Error('Failed to delete course');
@@ -79,7 +83,8 @@ export const assignInstractor = async (courseId, instractorId) => {
           method: "PUT",
           headers: {
               "Content-Type": "application/json"
-          }
+          },
+          credentials: "include"
       });
       return response.json();
   } catch (error) {
@@ -96,6 +101,7 @@ export const enrollStudents = async (selectedStudents, courseId) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ selectedStudents, courseId }),
+      credentials: "include"
     });
     return await response.json();
   } catch (error) {
@@ -111,6 +117,7 @@ export const fetchEnrolledUsers = async (courseId) => {
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: "include"
     });
     return await response.json();
   } catch (error) {
@@ -128,6 +135,7 @@ export const createChapter = async (courseId, chapterData) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(chapterData),
+      credentials: "include"
     });
     if (!response.ok) {
       throw new Error('Failed to create chapter');
@@ -146,6 +154,7 @@ export const deleteChapter = async (chapterId) => {
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: "include"
     });
     if (!response.ok) {
       throw new Error('Failed to delete chapter');
@@ -170,6 +179,7 @@ export const createLesson = async (lessonData, chapterId) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(lessonData),
+      credentials: "include"
     });
     if (!response.ok) {
       throw new Error('Failed to create lesson');
@@ -189,6 +199,7 @@ export const updateLesson = async (lessonId, lessonData) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(lessonData),
+      credentials: "include"
     });
     if (!response.ok) {
       throw new Error('Failed to update lesson');
@@ -207,6 +218,7 @@ export const deleteLesson = async (lessonId) => {
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: "include"
     });
     if (!response.ok) {
       throw new Error('Failed to delete lesson');

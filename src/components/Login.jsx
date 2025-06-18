@@ -5,7 +5,7 @@ import  {AuthContext }  from '../context/AuthContext'
 
 
 const Login = () => {
-    const {setUser}=useContext(AuthContext);
+    const {user, setUser}=useContext(AuthContext);
     const [formData, setFormData]=useState({username:"",password:""})
     const [error,setError]=useState('');
     const [rememberedUsername, setRememberUsername] = useState(false);
@@ -36,7 +36,13 @@ const Login = () => {
                 setError(error.message);
             } else {
                 console.log('Login successful:');
-                setUser(response.user);
+                if(response.user){
+                    setUser(response.user);
+                }else if (response.username){
+                    setUser(response.username);
+                    console.log("the admin username is ", response)
+                }
+                
                 console.log(response.user)
                 if (rememberedUsername) {
                     localStorage.setItem("rememberedUsername", formData.username);

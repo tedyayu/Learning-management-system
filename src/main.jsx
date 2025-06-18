@@ -5,7 +5,6 @@ import "./index.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import LoginPage from "./pages/studentPages/LoginPage";
 import Overview from "./pages/studentPages/Overview";
-import GradesPage from "./pages/studentPages/GradesPage.jsx";
 import ProfilePage from "./pages/studentPages/ProfilePage";
 import Home from "./pages/studentPages/Home.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
@@ -48,8 +47,6 @@ createRoot(document.getElementById("root")).render(
               <Route path="/login-page" element={<LoginPage />} />
               <Route path="/ProfilePage" element={<ProfilePage />} />
               <Route path="/Overview" element={<Overview />} />
-              <Route path="/GradesPage" element={<GradesPage />} />
-              <Route path="/course" element={<CourseDetailPage />}/>
               <Route path="/course/:courseId" element={<CourseDetailPage />}/>
               <Route path="/course/:courseId/Home" element={<CourseDetailHomePage />} />
               <Route path="/ContentDetail/:chapterId" element={<ContentDetailPage />} />

@@ -1,7 +1,6 @@
 import {useContext} from 'react'
 import Header from '../../components/Header'
 import Navigation from '../../components/Navigation'
-import Announcement from '../../components/student/Announcement'
 import Login from '../../components/Login'
 import SubHeader from '../../components/SubHeader'
 import Courses from '../../components/Courses'
@@ -26,7 +25,6 @@ const Home = () => {
         <div className="flex-grow flex bg-white py-0 border-t border-gray-400" >
           <div className="w-2/5 flex flex-col ml-4">
             <Navigation isLoggedIn={!!user} user={user}/>
-            <Announcement /> 
           </div>
           <div className="w-full flex  pr-10 flex-col m-5">
               {user ? (

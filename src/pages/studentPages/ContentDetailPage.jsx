@@ -6,7 +6,7 @@ import {AuthContext } from '../../context/AuthContext'
 import { useLocation } from 'react-router-dom';
 import ContentDescription from '../../components/student/ContentDisplay';
 import ContentNavigation from '../../components/student/ContentNavigation';
-import AiComponent from '../../components/student/AiComponent';
+import CourseCategory from '../../components/CourseCategory'
 
 const ContentDetail = () => {
 
@@ -41,7 +41,7 @@ const ContentDetail = () => {
       <Header isLoggedIn={!!user}  user={user} setUser={setUser}/>
       <SubHeader isLoggedIn={!!user} user={user}/>
       <div className="flex-grow flex bg-white py-0 border-t border-gray-400" >
-        <div className="w-1/5 flex flex-col ml-4">
+        <div className="w-1/3 flex flex-col ml-4">
           <ContentNavigation chapter={chapter} setSelectedLesson={setSelectedLesson}/>
         </div>
         <div className="w-3/5 flex flex-col m-5">
@@ -57,8 +57,8 @@ const ContentDetail = () => {
               />
             }
         </div>
-        <div className="w-2/5 flex items-end justify-start  flex-col"> {/* Added padding right */}
-            {<AiComponent/>}
+        <div className="w-2/5 flex items-end justify-start  flex-col">
+         <CourseCategory/>
         </div>
       </div>
 

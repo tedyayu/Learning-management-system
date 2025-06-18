@@ -157,3 +157,4 @@ export const fetchProgressData = async (userId, courseId) => {
     });
     return response.json();
 };
+

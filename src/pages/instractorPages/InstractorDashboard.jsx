@@ -11,7 +11,7 @@ import { StudentProvider } from "../../context/StudentContext";
 import { AnnouncementProvider } from "../../context/AnnouncmentContext";
 
 function InstractorDashboard() {
-    const { user } = useContext(AuthContext);
+    const { user,setUser } = useContext(AuthContext);
 
 
   return (
@@ -23,7 +23,7 @@ function InstractorDashboard() {
               <div className="min-h-screen flex flex-col bg-gray-100">
                 <div className="sticky top-0 z-10 bg-white shadow">
                   
-                  <Header user={user} isLoggedIn={!!user} />
+                  <Header user={user} isLoggedIn={!!user} setUser={setUser}/>
                 </div>
                 <div className="flex flex-1 overflow-hidden">
                   <div className="w-64 bg-gray-200 border-r border-gray-300 overflow-y-auto">

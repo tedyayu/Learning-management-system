@@ -89,7 +89,7 @@ const Header = ({ isLoggedIn, user, setUser }) => {
                   }}
                 >
                   <img
-                    src={user.student?.profilePhotoURL}
+                    src={user.student?.profilePhotoURL || user.instractor?.profilePhotoURL}
                     alt="Profile"
                     className="h-8 w-8 rounded-full mr-2"
                   />
