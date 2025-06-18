@@ -1,7 +1,4 @@
-
 const API_BASE_URL = "http://localhost:5001";
-
-
 
 
 export const loginUser = async (credentials) => {
@@ -54,6 +51,8 @@ export const updateProfile= async (profileData)=>{
     return response.json();
 }
 
+
+
 export const updatePassword= async (passwordData)=>{
     
     const response=await fetch (`${API_BASE_URL}/api/student/updatePassword`,{
@@ -66,6 +65,10 @@ export const updatePassword= async (passwordData)=>{
     })
     return response.json();
 }
+
+
+
+
 
 export const getAllUsers = async () => {
     const response = await fetch(`${API_BASE_URL}/api/student/all`,{
@@ -113,6 +116,17 @@ export const updateAnnouncement = async (id, announcement) => {
     const response = await fetch(`${API_BASE_URL}/api/admin/adminAnnouncement/${id}`, {
         method: "PUT",
         body: JSON.stringify(announcement),
+        headers: {
+            "Content-Type": "application/json"
+        },
+        credentials: "include"
+    });
+    return response.json();
+};
+
+export const deleteAnnouncement = async (id) => {
+    const response = await fetch(`${API_BASE_URL}/api/admin/adminAnnouncement/${id}`, {
+        method: "DELETE",
         headers: {
             "Content-Type": "application/json"
         },

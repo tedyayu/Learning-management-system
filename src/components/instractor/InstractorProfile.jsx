@@ -1,5 +1,5 @@
 import { useState } from "react"; 
-import { updateProfile ,updatePassword} from '../../utils/api';
+import { updateInstractorProfile ,updateInstractorPassword} from '../../utils/instractor.api';
 import {supabase} from '../../utils/SupabaseClient';
 
 const Profile = ({ user, setUser }) => {
@@ -11,6 +11,10 @@ const Profile = ({ user, setUser }) => {
     email: "",
     language: "English",
     phoneNumber: "",
+    bio: "",
+    expertise: "",
+    linkedin: "",
+    twitter: ""
   });
 
   const [passwordData, setPasswordData] = useState({
@@ -63,7 +67,6 @@ const Profile = ({ user, setUser }) => {
     setError('');
     
     try {
-    
       let profilePhotoUrl = profileData.profilePhoto;
 
       if (profileData.profilePhoto instanceof File) {
@@ -75,13 +78,13 @@ const Profile = ({ user, setUser }) => {
         profilePhoto: profilePhotoUrl,
       };
 
-      const response = await updateProfile(updatedProfileData);
+      const response = await updateInstractorProfile(updatedProfileData, user.id);
       if (response.error) {
         console.error("Error while updating profile", response.error);
         setError(response.error.message);
       } else {
-        alert("Student profile has been updated successfully");
-        console.log('Student profile has been updated successfully');
+        alert("Instractor profile has been updated successfully");
+        console.log('Instractor profile has been updated successfully');
       }
     } catch (error) {
       console.error("Updating profile error", error);
@@ -93,7 +96,7 @@ const Profile = ({ user, setUser }) => {
     e.preventDefault();
     setError('');
     try {
-      const response = await updatePassword(passwordData);
+      const response = await updateInstractorPassword(passwordData, user.id);
       if (response.error) {
         console.error("Error while updating password", response.error);
         setError(response.error.message);
@@ -184,6 +187,41 @@ const Profile = ({ user, setUser }) => {
             name='email'
             className="border border-gray-300 rounded-md px-3 py-2 w-full mt-1" 
             value={profileData.email} 
+            onChange={handleChange} 
+          />
+        </div>
+
+        <div className="mt-4">
+          <label htmlFor="bio" className="block font-medium">Bio</label>
+          <textarea
+            id="bio"
+            name="bio"
+            className="border border-gray-300 rounded-md px-3 py-2 w-full mt-1"
+            value={profileData.bio}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="mt-4">
+          <label htmlFor="expertise" className="block font-medium">Expertise</label>
+          <input 
+            type="text" 
+            id="expertise" 
+            name='expertise'
+            className="border border-gray-300 rounded-md px-3 py-2 w-full mt-1" 
+            value={profileData.expertise} 
+            onChange={handleChange} 
+          />
+        </div>
+
+        <div className="mt-4">
+          <label htmlFor="linkedin" className="block font-medium">Linkedin</label>
+          <input 
+            type="text" 
+            id="linkedin" 
+            name='linkedin'
+            className="border border-gray-300 rounded-md px-3 py-2 w-full mt-1" 
+            value={profileData.linkedin} 
             onChange={handleChange} 
           />
         </div>

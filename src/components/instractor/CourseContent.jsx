@@ -1,6 +1,6 @@
 import { useState,useEffect} from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import {createChapter, fetchSingleCourse} from '../../utils/course.api'; 
+import {createChapter, fetchSingleCourse ,deleteChapter} from '../../utils/course.api'; 
 
 
 
@@ -61,15 +61,20 @@ const CourseContent = () => {
     }
   };
 
+  const handleDeleteChapter = async (chapterId) => {
+    const confirmDelete = window.confirm('Are you sure you want to delete this chapter?');
+    if (confirmDelete) {
+      await deleteChapter(chapterId); 
+      alert('Chapter deleted successfully');
+    }
+  }
+
   return (
     <div className="p-6 space-y-6 bg-gray-50 min-h-screen">
-      {/* Header */}
       <div className="flex items-center justify-between">
         <div>
         <h1 className="text-xl font-semibold">{courseTitle || 'Course Content'}</h1>
-        <p className="text-sm text-gray-500">
-            Let's construct your course and incorporate various materials and activities.
-          </p>
+       
         </div>
         <div className="flex items-center space-x-3">
           <button
@@ -78,7 +83,6 @@ const CourseContent = () => {
           >
             + Add Chapter
           </button>
-          <button className="bg-blue-500 text-white px-4 py-2 rounded-md text-sm">Active</button>
         </div>
       </div>
 
@@ -90,35 +94,29 @@ const CourseContent = () => {
               <span className="font-bold text-lg">0{index + 1}</span>
               <div>
                 <h2 className="text-base font-medium">{chapter.title}</h2>
-                <span className="text-xs bg-yellow-200 px-2 py-0.5 rounded">Inactive</span>
               </div>
             </div>
             <div className="space-x-2">
-              <button className="text-gray-500 hover:text-black">✏️</button>
-              <button className="text-gray-500 hover:text-black">👁</button>
-              <button className="text-gray-500 hover:text-red-500">🗑</button>
+              <button className="bg-sky-500 text-white px-4 py-1 rounded text-sm" onClick={() => handleDeleteChapter(chapter.id)}>Delete Chapter</button>
             </div>
           </div>
 
           <div className="pl-8">
             <button
-              onClick={() => setShowContentFormId(chapter.id)} // Updated from "lesson.id"
+              onClick={() => setShowContentFormId(chapter.id)} 
               className="bg-sky-500 text-white px-4 py-1 rounded text-sm"
             >
               Add content
             </button>
-            <span className="mx-2 text-gray-500">or</span>
-            <button className="text-blue-500 text-sm">Import from media</button>
-            <span className="mx-2 text-gray-500">or</span>
-            <button className="text-gray-700 text-sm">Add topic</button>
+           
           </div>
           <div className="pl-8 mt-4">
             <h3 className="text-sm font-medium mb-2">Lessons:</h3>
             {chapter.lessons && chapter.lessons.length > 0 ? (
-              <ul className="list-disc list-inside space-y-1">
+              <ul className="list-disc list-inside space-y-1 list-none ">
                 {chapter.lessons.map((lesson) => (
                   <li key={lesson.id} className="text-sm text-gray-700 cursor-pointer hover:underline" onClick={() => navigate(`/InstractorDashboard/mycourses/${courseId}/lesson/${lesson.id}`,{ state: { lesson }}) }>
-                    {lesson.title}
+                    👁 {lesson.title}
                   </li>
                 ))}
               </ul>
@@ -165,7 +163,6 @@ const CourseContent = () => {
                 </div>
               </div>
 
-              {/* Right: Content Types */}
               <div className="grid grid-cols-3 gap-4 text-sm text-center">
                 <div
                   className="p-4 border rounded hover:bg-gray-50 cursor-pointer"
@@ -174,28 +171,9 @@ const CourseContent = () => {
                   📖<br />
                   Lesson
                 </div>
-                <div
-                  className="p-4 border rounded hover:bg-gray-50 cursor-pointer"
-                  onClick={() =>
-                    navigate(`/InstractorDashboard/mycourses/${courseId}/create-assignment/${showContentFormId}`)
-                  }
-                >
-                  📋<br />
-                  Assignment
-                </div>
-                {/* <div
-                  className="p-4 border rounded hover:bg-gray-50 cursor-pointer"
-                  onClick={() => navigate(`/InstractorDashboard/mycourses/${courseId}/create-video/${showContentFormId}`)}
-                >
-                  ▶️<br />
-                  YouTube
-                </div> */}
-                <div className="p-4 border rounded hover:bg-gray-50 cursor-pointer">📖<br />Scorm</div>
-                <div className="p-4 border rounded hover:bg-gray-50 cursor-pointer">❓<br />Exam</div>
-                <div className="p-4 border rounded hover:bg-gray-50 cursor-pointer">🎥<br />Live class</div>
-                <div className="p-4 border rounded hover:bg-gray-50 cursor-pointer">💻<br />Html material</div>
-                <div className="p-4 border rounded hover:bg-gray-50 cursor-pointer">🎬<br />Vimeo</div>
-                <div className="p-4 border rounded hover:bg-gray-50 cursor-pointer">📚<br />Flipbook</div>
+                
+                
+               
               </div>
             </div>
           </div>

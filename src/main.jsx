@@ -19,20 +19,11 @@ import Dashboard from "./components/admin/Dashboard";
 import CourseDetailsManagment from "./components/admin/CourseDetailsManagment";
 import EnrolledUsers from "./components/admin/EnrolledUsers";
 import CourseEnrollment from "./components/admin/CourseEnrollment";
-import CourseSettings from "./components/admin/CourseSetting";
 import AdminAnnouncements from "./components/admin/Announcement";
 
 import InstractorDashboard from "./pages/instractorPages/InstractorDashboard";
 import MyCourses from "./components/instractor/MyCourses";
 import Announcements from "./components/instractor/Announcements";
-import Withdrawals from "./components/instractor/Withdrawals";
-import QuizAttempts from "./components/instractor/QuizAttempts";
-import GoogleMeet from "./components/instractor/GoogleMeet";
-import Assignments from "./components/instractor/Assignments";
-import Zoom from "./components/instractor/Zoom";
-import Analytics from "./components/instractor/Analytics";
-import Settings from "./components/instractor/Settings";
-import Logout from "./components/instractor/Logout";
 import MyDashboard from "./components/instractor/MyDashboard";
 import CourseContent from "./components/instractor/CourseContent";
 import CreateAssignment from "./components/instractor/CreateAssignment";
@@ -42,19 +33,24 @@ import CourseDetailPage from "./pages/studentPages/CourseDetailPage.jsx";
 import ContentDetailPage from "./pages/studentPages/ContentDetailPage.jsx";
 import CourseDetailHomePage from "./pages/studentPages/CourseDetailHomePage.jsx";
 import {AnnouncementProvider} from "./context/AnnouncmentContext.jsx";
+import {DepartmentProvider} from "./context/departmentContext.jsx";
+import InstractorProfilePage from "./pages/instractorPages/ProfilePage.jsx";
 
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
+    <DepartmentProvider>
       <AnnouncementProvider>
         <AuthProvider>
           <Router>
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/loginPage" element={<LoginPage />} />
+              <Route path="/login-page" element={<LoginPage />} />
+              <Route path="/ProfilePage" element={<ProfilePage />} />
               <Route path="/Overview" element={<Overview />} />
               <Route path="/GradesPage" element={<GradesPage />} />
-              <Route path="/course/:courseId" element={<CourseDetailPage />} />
+              <Route path="/course" element={<CourseDetailPage />}/>
+              <Route path="/course/:courseId" element={<CourseDetailPage />}/>
               <Route path="/course/:courseId/Home" element={<CourseDetailHomePage />} />
               <Route path="/ContentDetail/:chapterId" element={<ContentDetailPage />} />
               <Route path="/AdminDashboard" element={<AdminDashboard />}>
@@ -67,11 +63,10 @@ createRoot(document.getElementById("root")).render(
                 <Route path="content-management" element={<ContentManagement />} />
                 <Route path="course/:courseId" element={<CourseDetailsManagment />}/>
                 <Route path="course/:courseId/enroll" element={<EnrolledUsers />} />
-                <Route path="course/:courseId/settings" element={<CourseSettings />} />
                 <Route path="course/:courseId/enroll/user-enrollment" element={<CourseEnrollment />} />
               </Route>
 
-
+              <Route path="/InstractorProfilePage" element={<InstractorProfilePage />} />
               <Route path="/InstractorDashboard" element={<InstractorDashboard />}>
                 <Route index element={<MyDashboard />} />
                 <Route path="mycourses" element={<MyCourses />} />
@@ -81,23 +76,14 @@ createRoot(document.getElementById("root")).render(
                 <Route path="mycourses/:courseId/create-lesson/:showContentFormId" element={<CreateLesson />} />
                 <Route path="mycourses/:courseId/lesson/:lessonId/edit-lesson" element={<CreateLesson />}/>
                 <Route path="announcements" element={<Announcements />} />
-                <Route path="withdrawals" element={<Withdrawals />} />
-                <Route path="quiz-attempts" element={<QuizAttempts />} />
-                <Route path="google-meet" element={<GoogleMeet />} />
-                <Route path="assignments" element={<Assignments />} />
-                <Route path="zoom" element={<Zoom />} />
-                <Route path="analytics" element={<Analytics />} />
-                <Route path="settings" element={<Settings />} />
                 
               </Route>
-              <Route path="Logout" element={<Logout />} />
-
-
               <Route path="/ProfilePage" element={<ProfilePage />} />
               <Route path="/InstractorDashboard" element={<InstractorDashboard />} />
             </Routes>
           </Router>
         </AuthProvider>
       </AnnouncementProvider>
+    </DepartmentProvider>
   </StrictMode>
 );

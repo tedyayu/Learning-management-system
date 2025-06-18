@@ -62,7 +62,7 @@ const ContentDetail = () => {
         </div>
       </div>
 
-      <Footer/>
+      <Footer isLoggedIn={!!user}/>
     </div>
   )
 }

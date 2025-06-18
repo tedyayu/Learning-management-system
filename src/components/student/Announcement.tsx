@@ -36,7 +36,6 @@ const Announcement = () => {
             </li>
           ))}
         </ul>
-        <a href="#" className="text-blue-600 hover:underline">Older topics ...</a>
       </div>
     );
 }

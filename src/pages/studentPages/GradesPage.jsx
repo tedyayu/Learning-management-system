@@ -29,7 +29,7 @@ const GradesPage = () => {
                 
             </div>
         </div>
-        <Footer/>
+        <Footer isLoggedIn={!!user}/>
     </>
   )
 }

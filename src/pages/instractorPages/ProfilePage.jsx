@@ -1,10 +1,10 @@
 import {useContext} from 'react'
 import Header from '../../components/Header'
-import Profile from '../../components/student/Profile'
+import Profile from '../../components/instractor/InstractorProfile'
 import Footer from '../../components/Footer'
 import {AuthContext } from '../../context/AuthContext'
 
-const ProfilePage = () => {
+const InstractorProfilePage = () => {
     const {authToken,user,setAuthToken, setUser}=useContext(AuthContext);
 
   return (
@@ -20,4 +20,4 @@ const ProfilePage = () => {
   )
 }
 
-export default ProfilePage
+export default InstractorProfilePage

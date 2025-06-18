@@ -41,7 +41,6 @@ const EnrolledUsers = () => {
       <div className="flex justify-between items-center mb-4">
         <div>
           <h2 className="text-xl font-semibold text-gray-800">Enrolled Users</h2>
-          <p className="text-gray-600 text-sm">Enrolled users for course ID: {courseId}</p>
         </div>
         <div className="space-x-2">
           <button
@@ -51,7 +50,7 @@ const EnrolledUsers = () => {
             Export Users
           </button>
           <button
-            onClick={handleEnrollNewUser}
+            onClick={() => handleEnrollNewUser()}
             className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
             + Enroll

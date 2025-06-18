@@ -21,7 +21,7 @@ const Overview = () => {
                 <CoursesImTaking />
             </div>
         </div>
-        <Footer/>
+        <Footer isLoggedIn={!!authToken}/>
     </div>
   )
 }

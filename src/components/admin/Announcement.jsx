@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import { FaBell } from "react-icons/fa";
-import { submitAnnouncement , updateAnnouncement} from "../../utils/api";
+import { submitAnnouncement , updateAnnouncement , deleteAnnouncement} from "../../utils/api";
 import { AnnouncementContext } from "../../context/AnnouncmentContext";
 
 
@@ -41,7 +41,6 @@ const AdminAnnouncements = () => {
           setEditId(null);
           alert("Announcement updated!");
         } else {
-          // Create new announcement
           const response = await submitAnnouncement(formAnnouncement);
           setAnnouncements((prev) => [
             {
@@ -65,16 +64,14 @@ const AdminAnnouncements = () => {
     }
   };
 
-  const handleDeleteAnnouncement = (id) => {
-    setAnnouncements((prev) => prev.filter((a) => a.id !== id));
-    // If deleting the one being edited, reset form
-    if (editId === id) {
-      setEditId(null);
-      setFormAnnouncement({ title: "", message: "" });
+  const handleDeleteAnnouncement = async (id) => {
+    const confirmDelete = window.confirm('Are you sure you want to delete this announcement?');
+    if (confirmDelete) {
+      await deleteAnnouncement(id);
+      alert('Announcement deleted successfully');
     }
   };
 
-  // Start editing: load values into the form
   const handleEditAnnouncement = (announcement) => {
     setEditId(announcement.id);
     setFormAnnouncement({
@@ -83,7 +80,6 @@ const AdminAnnouncements = () => {
     });
   };
 
-  // Cancel edit
   const handleCancelEdit = () => {
     setEditId(null);
     setFormAnnouncement({ title: "", message: "" });
@@ -172,7 +168,7 @@ const AdminAnnouncements = () => {
             {announcements.map((announcement) => (
               <tr key={announcement.id} className="border-t">
                 <td className="py-3 px-4">{announcement.title}</td>
-                <td className="py-3 px-4">{announcement.message}</td>
+                <td className="py-3 px-4">{announcement.content}</td>
                 <td className="py-3 px-4">{announcement.date}</td>
                 <td className="py-3 px-4 flex gap-2">
                   <button

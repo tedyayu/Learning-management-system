@@ -5,7 +5,7 @@ import Announcement from '../../components/student/Announcement'
 import Login from '../../components/Login'
 import SubHeader from '../../components/SubHeader'
 import CourseDetail from '../../components/student/CourseDetail'
-import CourseCategory from '../../components/CourseCategory'
+import CourseCategory from '../../components/CourseCategory.jsx'
 import CourseOverview from '../../components/student/CourseOverview'
 import Footer from '../../components/Footer'
 import SiteNews from '../../components/SiteNews'
@@ -52,7 +52,7 @@ const Home = () => {
           </div>
         </div>
 
-        <Footer/>
+        <Footer isLoggedIn={!!user}/>
       </div>
     </DepartmentProvider>
   )

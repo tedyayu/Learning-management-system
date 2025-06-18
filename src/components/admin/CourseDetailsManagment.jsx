@@ -53,21 +53,7 @@ export default function CourseDetailsManagment() {
           <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" onClick={() => navigate(`/AdminDashboard/course/${courseId}/enroll`)}>
             Enroll Users
           </button>
-          <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300">
-            Publish
-          </button>
-          <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300">
-            Unpublish
-          </button>
-          <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300" >
-            Archive
-          </button>
-          <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300" >
-            Check-in
-          </button>
-          <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" onClick={() => navigate(`/AdminDashboard/course/${courseId}/settings`)}>
-            setting
-          </button>
+
         </div>
 
 {isModalOpen && (
@@ -125,18 +111,15 @@ export default function CourseDetailsManagment() {
           
     <div className="flex flex-col md:flex-row gap-8 ">
       
-      {/* Left Section */}
       <div className="flex-1">
-        {/* Course Image */}
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
           <img
-            src={courseDetails.imageUrl || "/default-course-image.jpg"} 
+            src={courseDetails.courseImageurl || "/default-course-image.jpg"} 
             alt="Course"
             className="w-full h-72 object-cover"
           />
         </div>
 
-        {/* Course Title and Description */}
         <div className="bg-white rounded-lg shadow-md p-6 mt-6">
           <h1 className="text-3xl font-bold mb-4">
             {courseDetails.name || "Learn Python: From Beginner to Advanced"}
@@ -147,45 +130,24 @@ export default function CourseDetailsManagment() {
         </div>
       </div>
 
-      {/* Right Sidebar */}
       <div className="w-full md:w-1/3">
         <div className="bg-white rounded-lg shadow-md p-6 space-y-6">
-          {/* Price */}
-          <div>
-            <p className="text-gray-500 ">Price</p>
-            <p className="text-3xl font-bold text-blue-600">${courseDetails.price || "N/A"}</p>
-          </div>
 
-          {/* Course Information */}
           <div className="space-y-4 text-gray-700">
-            <div className="flex justify-between">
-              <span>Lessons</span>
-              <span className="font-semibold">{courseDetails.lessonsCount || "N/A"} Videos</span>
-            </div>
+            
             <div className="flex justify-between">
               <span>Language</span>
               <span className="font-semibold">{courseDetails.language || "English"}</span>
             </div>
             <div className="flex justify-between">
-              <span>Course Level</span>
-              <span className="font-semibold">{courseDetails.level || "Beginner"}</span>
+              <span>Credits</span>
+              <span className="font-semibold">{courseDetails.credits || "0"}</span>
             </div>
             <div className="flex justify-between">
-              <span>Reviews</span>
-              <span className="font-semibold">{courseDetails.reviews || "4.7 (5.5k)"}</span>
+              <span>Department</span>
+              <span className="font-semibold">{courseDetails?.department?.name || "General"}</span>
             </div>
-            <div className="flex justify-between">
-              <span>Quizzes</span>
-              <span className="font-semibold">{courseDetails.quizzes || "08"}</span>
-            </div>
-            <div className="flex justify-between">
-              <span>Duration</span>
-              <span className="font-semibold">{courseDetails.duration || "7 Weeks"}</span>
-            </div>
-            <div className="flex justify-between">
-              <span>Students</span>
-              <span className="font-semibold">{courseDetails.students || "2.5k"}</span>
-            </div>
+            
             <div className="flex justify-between">
               <span>Certifications</span>
               <span className="font-semibold">
@@ -198,12 +160,7 @@ export default function CourseDetailsManagment() {
                 {courseDetails?.passPercentage || "Not available"}
               </span>
             </div>
-            <div className="flex justify-between">
-              <span>Deadline</span>
-              <span className="font-semibold">
-                {courseDetails?.deadline || "Not available"}
-              </span>
-            </div>
+           
             
             <div className="flex justify-between">
               <span>Instructor</span>

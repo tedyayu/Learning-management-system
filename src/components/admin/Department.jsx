@@ -65,17 +65,26 @@ const Department = () => {
     setSearchTerm(e.target.value);
     
   };
-  const searchDepartment = async () => {
-    try {
-      const department = await fetchDepartementByTerm(searchTerm);
-    
+
+ const searchDepartment = async () => {
+  if (!searchTerm.trim()) {
+    alert('Please enter a department name to search.');
+    return;
+  }
+
+  try {
+    const department = await fetchDepartementByTerm(searchTerm);
+    if (department) {
       setSearchResults([department]);
-      console.log(searchResults);
-      
-    } catch (error) {
-      console.error('There was an error searching the department!', error);
+    } else {
+      setSearchResults([]);
+      alert('No department found.');
     }
-  };
+  } catch (error) {
+    console.error('There was an error searching the department!', error);
+    alert('Error fetching department. Please try again.');
+  }
+};
 
 
 
@@ -114,38 +123,54 @@ const Department = () => {
 };
 
   const handlePublishButtonClick = async () => {
-    try {
-      for (const id of selectedDepartments) {
-        const updatedDepartment = await publishDepartment(id); // Get the updated department object
-        setDepartments((prevDepartments) =>
-          prevDepartments.map((dept) =>
-            dept.id === updatedDepartment.id ? updatedDepartment : dept
-          )
-        );
-      }
-     
-  
-      alert('Departments published successfully!');
-      setSelectedDepartments([]); // Clear the selection
-    } catch (error) {
-      console.error('There was an error publishing the departments!', error);
-      alert('Failed to publish some departments. Please try again.');
+  if (selectedDepartments.length === 0) {
+    alert('Please select at least one department to publish.');
+    return;
+  }
+
+  try {
+    for (const id of selectedDepartments) {
+      const updatedDepartment = await publishDepartment(id);
+      setDepartments((prevDepartments) =>
+        prevDepartments.map((dept) =>
+          dept.id === updatedDepartment.id ? updatedDepartment : dept
+        )
+      );
     }
 
-  };
+    alert('Departments published successfully!');
+    setSelectedDepartments([]);
+  } catch (error) {
+    console.error('There was an error publishing the departments!', error);
+    alert('Failed to publish some departments. Please try again.');
+  }
+};
 
-  const handleUnpublishButtonClick =async  () => {
-    try {
-      for (const id of selectedDepartments) {
-        await unPublishDepartment(id);
-      }
-      alert('Departments unpublished successfully!');
-    } catch (error) {
-      console.error('There was an error unpublishing the department!', error);
-      alert('Failed to unpublish the department. Please try again.');
+
+ const handleUnpublishButtonClick = async () => {
+  if (selectedDepartments.length === 0) {
+    alert('Please select at least one department to unpublish.');
+    return;
+  }
+
+  try {
+    for (const id of selectedDepartments) {
+      const updatedDepartment = await unPublishDepartment(id);
+      setDepartments((prevDepartments) =>
+        prevDepartments.map((dept) =>
+          dept.id === updatedDepartment.id ? updatedDepartment : dept
+        )
+      );
     }
 
-  };
+    alert('Departments unpublished successfully!');
+    setSelectedDepartments([]);
+  } catch (error) {
+    console.error('There was an error unpublishing the departments!', error);
+    alert('Failed to unpublish some departments. Please try again.');
+  }
+};
+
 
   const handleArchiveButtonClick = () => {
     const updatedDepartments = departments.map((dept, index) => {
@@ -184,7 +209,6 @@ const Department = () => {
       <div className="bg-white rounded-lg shadow-md p-4">
         <h1 className="text-xl font-semibold mb-4 text-gray-800">Departments and Schools</h1>
 
-        {/* Action Buttons */}
         <div className="flex space-x-2 mb-4">
           <button className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600" onClick={handleNewButtonClick}>
             + New
@@ -195,39 +219,23 @@ const Department = () => {
           <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300" onClick={handleUnpublishButtonClick}>
             Unpublish
           </button>
-          <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300" onClick={handleArchiveButtonClick}>
-            Archive
-          </button>
-          <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300" onClick={handleCheckInButtonClick}>
-            Check-in
-          </button>
-          <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300" onClick={handleTrashButtonClick}>
-            Trash
-          </button>
+          
         </div>
 
-        {/* Search Bar */}
         <div className="mb-4 flex items-center space-x-2">
           <input
             type="text"
             placeholder="Search"
             value={searchTerm}
             onChange={handleSearchChange}
-            className="border rounded px-4 py-2 w-64 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="shadow border rounded w-full py-2 px-3 text-gray-700"
           />
-          <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300" onClick={searchDepartment}>
+          <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300" onClick={() => searchDepartment()}>
             Search
           </button>
-          <select className="border rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <option>Search Tools</option>
-            {/* Add more options as needed */}
-          </select>
-          <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300">
-            Clear
-          </button>
+          
         </div>
 
-        {/* Search Results */}
         {searchResults && searchResults.length > 0 && (
           <div>
             <h2 className="text-lg font-semibold mb-4 text-gray-800">Search Results</h2>

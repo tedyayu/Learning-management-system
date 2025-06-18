@@ -27,14 +27,14 @@ const MyCourses = () => {
             onClick={() => navigate(`/InstractorDashboard/mycourses/${course.id}`)}
           >
             <img
-              src={course.image}
+              src={course.courseImageurl}
               alt={course.title}
               className="w-full h-48 object-cover rounded-md mb-4"
             />
             <h3 className="text-lg font-semibold">{course.name}</h3>
-            <p className="text-gray-600 text-sm mt-2">{course.startDate}</p>
+            <p className="text-gray-600 text-sm mt-2">{course.department}</p>
             <p className="text-gray-800 font-medium mt-2">{course.price}</p>
-            <p className="text-gray-500 text-sm mt-1">{course.duration}</p>
+            <p className="text-gray-500 text-sm mt-1">{course.endDate}</p>
           </div>
         ))}
       </div>

@@ -1,62 +1,48 @@
-import { useState , useEffect} from "react";
+import { useState, useEffect } from "react";
 import { PencilIcon, TrashIcon } from "lucide-react";
-import {registerInstractor, getInstarctor} from '../../utils/instractor.api'
+import { registerInstractor, getInstarctor } from '../../utils/instractor.api';
 
-
-export default function RegisterInstarctorPage() { 
- 
+export default function RegisterInstarctorPage() {
   const [users, setUsers] = useState([]);
   const [editingUser, setEditingUser] = useState(null);
-  const [newUser, setNewUser] = useState({ username: "", password: "",ID_NO:"",email:"",role:"instractor"});
+  const [newUser, setNewUser] = useState({ username: "", password: "", instructorId: "", email: "", role: "INSTRUCTOR" });
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [error, setError] = useState("");
-  const [instractors, setInstractors] = useState([]);
+  const [instructors, setInstructors] = useState([]);
 
   useEffect(() => {
-    const fetchInstractor = async () => {
+    const fetchInstructors = async () => {
       try {
         const data = await getInstarctor();
-        setInstractors(data);       
+        setInstructors(data);
       } catch (error) {
-        console.error('There was an error fetching the Instractors!', error);
-      } 
+        console.error('There was an error fetching the instructors!', error);
+      }
     };
-
-    fetchInstractor();
+    fetchInstructors();
   }, []);
-  
-
 
   const addUser = async (e) => {
     e.preventDefault();
     setError("");
-    
     try {
-      
-      console.log("Sending request:", newUser);
-      const response = await registerInstractor(newUser)
-
-      
-      if(response.error){
+      const response = await registerInstractor(newUser);
+      if (response.error) {
         setError(response.error.message);
-        console.error("response error", response.error)
-      }else{
-        alert("new Instractor added")
+      } else {
+        alert("New Instructor added");
         setUsers([...users, { ...newUser, id: users.length + 1 }]);
-        setNewUser({ username: "", password: "",ID_NO:"",email:"",role:"instractor" });
+        setNewUser({ username: "", password: "", instructorId: "", email: "", role: "INSTRUCTOR" });
       }
-
     } catch (error) {
       setError("Error registering user");
-      console.error("error registering user", error);
+      console.error("Error registering user", error);
     }
   };
 
-   
-
   const updateUser = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     setUsers(users.map(user => (user.id === editingUser.id ? editingUser : user)));
     setEditingUser(null);
   };
@@ -66,22 +52,20 @@ export default function RegisterInstarctorPage() {
   };
 
   const handleSearch = () => {
-    const filteredUsers = users.filter(
-      user => user.username.includes(searchQuery)
-    );
+    const filteredUsers = users.filter(user => user.username.toLowerCase().includes(searchQuery.toLowerCase()));
     setSearchResults(filteredUsers);
   };
-  
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Register Instractor</h1>
+      <h1 className="text-2xl font-bold mb-4">Register Instructor</h1>
+
+      {/* Search */}
       <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        <h2 className="text-xl font-semibold mb-4">Search Instractor</h2>
+        <h2 className="text-xl font-semibold mb-4">Search Instructor</h2>
         <div className="flex gap-4 mb-4">
-          
           <input
-            className="shadow border rounded py-2 px-3 text-gray-700"
+            className="shadow border rounded w-full py-2 px-3 text-gray-700"
             type="text"
             placeholder="Enter username"
             value={searchQuery}
@@ -90,119 +74,105 @@ export default function RegisterInstarctorPage() {
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             onClick={handleSearch}
-          >
-            Search
-          </button>
+          >Search</button>
         </div>
       </div>
+
+      {/* Search Results */}
       {searchResults.length > 0 && (
         <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
           <h2 className="text-xl font-semibold mb-4">Search Results</h2>
-          <ul>
-            {searchResults.map(user => (
-              <>
-                
-                <table className="min-w-full border">
-                  <thead>
-                    <tr>
-                      
-                      <th className="px-4 py-2 border">Instractor Name</th>
-                      <th className="px-4 py-2 border">Email</th>
-                      <th className="px-4 py-2 border">Id No</th>
-                      <th className="px-4 py-2 border">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    
-                      <tr key={user.id}>
-                        
-                        <td className="border px-4 py-2">{user.username}</td>
-                        <td className="border px-4 py-2">{user.email}</td>
-                        <td className="border px-4 py-2">{user.ID_NO}</td>
-                        <td className="border px-4 py-2">
-                          <button className="text-blue-500 hover:text-blue-700 mr-2" onClick={() => setEditingUser(user)}>
-                            <PencilIcon className="h-5 w-5" />
-                          </button>
-                          <button className="text-red-500 hover:text-red-700" onClick={() => deleteUser(user.id)}>
-                            <TrashIcon className="h-5 w-5" />
-                          </button>
-                        </td>
-                      </tr>
-                    
-                  </tbody>
-              </table>
-              </>
-            ))}
-          </ul>
+          <table className="min-w-full border">
+            <thead>
+              <tr>
+                <th className="px-4 py-2 border">Instructor Name</th>
+                <th className="px-4 py-2 border">Email</th>
+                <th className="px-4 py-2 border">Instructor ID</th>
+                <th className="px-4 py-2 border">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {searchResults.map(user => (
+                <tr key={user.id}>
+                  <td className="border px-4 py-2">{user.username}</td>
+                  <td className="border px-4 py-2">{user.email}</td>
+                  <td className="border px-4 py-2">{user.instructorId}</td>
+                  <td className="border px-4 py-2">
+                    <button className="text-blue-500 hover:text-blue-700 mr-2" onClick={() => setEditingUser(user)}>
+                      <PencilIcon className="h-5 w-5" />
+                    </button>
+                    <button className="text-red-500 hover:text-red-700" onClick={() => deleteUser(user.id)}>
+                      <TrashIcon className="h-5 w-5" />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-        
       )}
-      {/* Add/Edit User Form */}
-      <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-      onSubmit={editingUser ? updateUser : addUser}>
-        <h2 className="text-xl font-semibold mb-4">{editingUser ? "Edit User" : "Add New Instractor"}</h2>
-        <h1 className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">{error}</h1>
+
+      {/* Form */}
+      <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" onSubmit={editingUser ? updateUser : addUser}>
+        <h2 className="text-xl font-semibold mb-4">{editingUser ? "Edit Instructor" : "Add New Instructor"}</h2>
+        {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">{error}</div>}
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">Username</label>
           <input
-            className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight"
+            className="shadow border rounded w-full py-2 px-3 text-gray-700"
             type="text"
             placeholder="Username"
             value={editingUser ? editingUser.username : newUser.username}
-            onChange={e =>
-              editingUser? setEditingUser({ ...editingUser, username: e.target.value })
-                : setNewUser({ ...newUser, username: e.target.value })
-            }
-          required/>
+            onChange={e => editingUser
+              ? setEditingUser({ ...editingUser, username: e.target.value })
+              : setNewUser({ ...newUser, username: e.target.value })}
+            required
+          />
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">Password</label>
           <input
-            className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight"
+            className="shadow border rounded w-full py-2 px-3 text-gray-700"
             type="password"
             placeholder="Password"
             value={editingUser ? editingUser.password : newUser.password}
-            onChange={e =>
-              editingUser
-                ? setEditingUser({ ...editingUser, password: e.target.value })
-                : setNewUser({ ...newUser, password: e.target.value })
-            }
-          required/>
+            onChange={e => editingUser
+              ? setEditingUser({ ...editingUser, password: e.target.value })
+              : setNewUser({ ...newUser, password: e.target.value })}
+            required
+          />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">ID_NO</label>
+          <label className="block text-gray-700 text-sm font-bold mb-2">Instructor ID</label>
           <input
-            className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight"
+            className="shadow border rounded w-full py-2 px-3 text-gray-700"
             type="text"
-            placeholder="ID_NO"
-            value={editingUser ? editingUser.ID_NO : newUser.ID_NO}
-            onChange={e =>
-              editingUser
-                ? setEditingUser({ ...editingUser, ID_NO: e.target.value })
-                : setNewUser({ ...newUser, ID_NO: e.target.value })
-            }
-          required/>
+            placeholder="Instructor ID"
+            value={editingUser ? editingUser.instructorId : newUser.instructorId}
+            onChange={e => editingUser
+              ? setEditingUser({ ...editingUser, instructorId: e.target.value })
+              : setNewUser({ ...newUser, instructorId: e.target.value })}
+            required
+          />
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">Email</label>
           <input
-            className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight"
+            className="shadow border rounded w-full py-2 px-3 text-gray-700"
             type="email"
             placeholder="Email"
             value={editingUser ? editingUser.email : newUser.email}
-            onChange={e =>
-              editingUser ? setEditingUser({ ...editingUser, email: e.target.value })
-                : setNewUser({ ...newUser, email: e.target.value })
-            }
+            onChange={e => editingUser
+              ? setEditingUser({ ...editingUser, email: e.target.value })
+              : setNewUser({ ...newUser, email: e.target.value })}
             required
           />
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">Role</label>
           <input
-            className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight"
+            className="shadow border rounded w-full py-2 px-3 text-gray-700"
             type="text"
-            placeholder="Role"
             value={newUser.role}
             readOnly
           />
@@ -210,49 +180,42 @@ export default function RegisterInstarctorPage() {
         <div className="flex items-center justify-between">
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            onClick={editingUser ? updateUser : addUser}
             type="submit"
-          >
-            {editingUser ? "Update Instractor Information" : "Add New Instractor"}
-          </button>
+          >{editingUser ? "Update Instructor" : "Add New Instructor"}</button>
           {editingUser && (
             <button
               className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
-              onClick={() => setEditingUser(null)}
               type="button"
-            >
-              Cancel
-            </button>
+              onClick={() => setEditingUser(null)}
+            >Cancel</button>
           )}
         </div>
       </form>
 
-      
-
       {/* Instructor List */}
       <div className="bg-white shadow-md rounded px-8 pt-6 pb-8">
         <h2 className="text-xl font-semibold mb-4">Instructors 🎓</h2>
-        {instractors.length > 0 ? (
+        {instructors.length > 0 ? (
           <table className="min-w-full border">
             <thead>
               <tr>
                 <th className="px-4 py-2 border">Username</th>
                 <th className="px-4 py-2 border">Email</th>
-                <th className="px-4 py-2 border">ID_NO</th>
+                <th className="px-4 py-2 border">Instructor ID</th>
                 <th className="px-4 py-2 border">Actions</th>
               </tr>
             </thead>
             <tbody>
-              {instractors.map(instractor => (
-                <tr key={instractor.id}>
-                  <td className="border px-4 py-2">{instractor.firstName}</td>
-                  <td className="border px-4 py-2">{instractor.email}</td>
-                  <td className="border px-4 py-2">{instractor.instructorId}</td>
+              {instructors.map(instructor => (
+                <tr key={instructor.id}>
+                  <td className="border px-4 py-2">{instructor.firstName}</td>
+                  <td className="border px-4 py-2">{instructor.email}</td>
+                  <td className="border px-4 py-2">{instructor.instructorId}</td>
                   <td className="border px-4 py-2">
-                    <button className="text-blue-500 hover:text-blue-700 mr-2" onClick={() => setEditingUser(instractor)}>
+                    <button className="text-blue-500 hover:text-blue-700 mr-2" onClick={() => setEditingUser(instructor)}>
                       <PencilIcon className="h-5 w-5" />
                     </button>
-                    <button className="text-red-500 hover:text-red-700" onClick={() => deleteUser(instractor.id)}>
+                    <button className="text-red-500 hover:text-red-700" onClick={() => deleteUser(instructor.id)}>
                       <TrashIcon className="h-5 w-5" />
                     </button>
                   </td>
@@ -266,4 +229,4 @@ export default function RegisterInstarctorPage() {
       </div>
     </div>
   );
-  }
+}

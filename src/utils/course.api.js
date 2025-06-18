@@ -54,6 +54,25 @@ export const fetchSingleCourse = async (courseId) => {
     throw error;
   }
 }
+
+export const deleteCourse = async (courseId) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/course/deleteCourse/${courseId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!response.ok) {
+      throw new Error('Failed to delete course');
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('There was an error deleting the course!', error);
+    throw error;
+  }
+}
+
 export const assignInstractor = async (courseId, instractorId) => {
   try {
       const response = await fetch(`${API_BASE_URL}/api/course/assignInstractor/${courseId}/${instractorId}`, {
@@ -120,6 +139,24 @@ export const createChapter = async (courseId, chapterData) => {
   }
 };
 
+export const deleteChapter = async (chapterId) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/course/deleteChapter/${chapterId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!response.ok) {
+      throw new Error('Failed to delete chapter');
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('There was an error deleting the chapter!', error);
+    throw error;
+  }
+}
+
 export const createLesson = async (lessonData, chapterId) => {
 
   console.log("lesson data from frontend api", lessonData);
@@ -162,3 +199,22 @@ export const updateLesson = async (lessonId, lessonData) => {
     throw error;
   }
 };
+
+export const deleteLesson = async (lessonId) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/course/deleteLesson/${lessonId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!response.ok) {
+      throw new Error('Failed to delete lesson');
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('There was an error deleting the lesson!', error);
+    throw error;
+  }
+}
+

@@ -35,3 +35,29 @@ export const loginInstractor = async (credentials) => {
     }
 }
 
+export const updateInstractorProfile= async (profileData,userId)=>{
+    
+    const response=await fetch (`${API_BASE_URL}/api/instractor/updateProfile/${userId}`,{
+        method:"POST",
+        body:JSON.stringify(profileData),
+        headers:{
+            "Content-Type":"application/json"      
+        },
+        credentials: "include"
+    })
+    return response.json();
+}
+
+export const updateInstractorPassword= async (passwordData, userId)=>{
+    
+    const response=await fetch (`${API_BASE_URL}/api/instractor/updatePassword/${userId}`,{
+        method:"POST",
+        body:JSON.stringify(passwordData),
+        headers:{
+            "Content-Type":"application/json",
+        },
+        credentials: "include"
+    })
+    return response.json();
+}
+

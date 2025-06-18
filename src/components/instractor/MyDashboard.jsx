@@ -1,136 +1,87 @@
-import  { useState , useContext} from 'react';
+import { useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
-import {InstractorContext} from '../../context/InstractorContext';
+import { AnnouncementContext } from '../../context/AnnouncmentContext';
+import SiteNews from "../../components/SiteNews";
+import { Book, Users, MessageCircle } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const MyDashboard = () => {
   const { user } = useContext(AuthContext);
-  const { singleInstractor } = useContext(InstractorContext);
-  
+  const { announcements } = useContext(AnnouncementContext);
 
-  const [courseProgress, setCourseProgress] = useState([
-    { name: "Math 101", progress: 63, classes: 5 },
-    { name: "Math 102", progress: 45, classes: 3 },
-    { name: "Math 103", progress: 33, classes: 4 },
-    { name: "Math 104", progress: 25, classes: 2 },
-  ]);
+  const totalCourses = user?.instructor?.Courses?.length || 0;
 
-  const [dueItems, setDueItems] = useState([
+  const totalLearners = user?.instructor?.Courses?.reduce(
+    (acc, course) => acc + (course.enrollments?.length || 0),
+    0
+  );
+
+  const stats = [
     {
-      course: 'Math 101',
-      topic: 'Unit 2: Add and subtract nu...',
-      dueDate: '23 Dec 2017',
-      submissionRate: 69,
-      status: 'Waiting submissions',
-      id: 1
+      name: 'Course',
+      count: totalCourses,
+      icon: <Book className="w-6 h-6" />,
+      link: '/courses',
+      bg: 'bg-yellow-100',
+      iconBg: 'bg-yellow-300',
     },
     {
-      course: 'Math 102',
-      topic: 'Unit 2: Motion and forces',
-      dueDate: '20 Dec 2017',
-      submissionRate: 98,
-      status: 'Ready for grading',
-      id: 2
+      name: 'Learners',
+      count: totalLearners,
+      icon: <Users className="w-6 h-6" />,
+      link: '/learners',
+      bg: 'bg-teal-100',
+      iconBg: 'bg-teal-300',
     },
     {
-      course: 'Math 104',
-      topic: 'Linear equations',
-      dueDate: '13 Dec 2017',
-      submissionRate: 100,
-      status: 'Grotled successfully!',
-      id: 3
-    }
-  ]);
-
-  const [uploadedFiles, setUploadedFiles] = useState([
-    {
-      name: 'ClassPresentation.PDF',
-      course: 'Math 101',
-      topic: 'Unit 2: Add and subtract nu...',
-      date: '12 Dec 2017',
-      categories: ['Classwork', 'Homework'],
-      id: 1
+      name: 'Message',
+      count: 0,
+      icon: <MessageCircle className="w-6 h-6" />,
+      link: '/messages',
+      bg: 'bg-green-100',
+      iconBg: 'bg-green-300',
     },
-    {
-      name: 'Slideshow 220ec.PPT',
-      course: 'Math 102',
-      topic: 'Unit 2: Motion and forces',
-      date: '09 Dec 2017',
-      categories: ['Assignment', 'Course: Math 104', 'Homework'],
-      grade: '8A / 10',
-      id: 2
-    }
-  ]);
-
-  // State for Today's Schedule
-  const [schedule, setSchedule] = useState([
-    {
-      slot: 'Sot 3 | 1045 AM - 11:30 AM',
-      course: 'Math 102',
-      topic: 'Units3. Simple equation',
-      place: 'Classroom Aa',
-      id: 1
-    },
-    {
-      slot: 'Sot 4 | 12:00 PM - 12:45 PM',
-      course: 'Math 101',
-      topic: 'Units3. Multiple numbers',
-      place: 'Classroom 3b',
-      id: 2
-    },
-    {
-      slot: 'Sot 6 | 12:00 PM - 12:45 PM',
-      course: 'Math 101',
-      topic: 'Units3. Multiple numbers',
-      place: 'Classroom 3b',
-      id: 3
-    }
-  ]);
-
-  // State for Latest Grades
-  const [grades, setGrades] = useState([
-    {
-      type: 'Attendance',
-      course: 'Math 101',
-      category: 'Classwork',
-      grade: '4 / 5',
-      id: 1
-    },
-    {
-      type: 'Assignment',
-      course: 'Math 104',
-      category: 'Homework',
-      grade: '8A / 10',
-      id: 2
-    }
-  ]);
-
-  // State for Announcements
-  const [announcements, setAnnouncements] = useState([
-    'New Announcement',
-    'Quiz',
-    {
-      course: 'Math 104',
-      category: 'Homework'
-    }
-  ]);
+  ];
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
-      {/* Main Content */}
+    <div className="flex min-h-screen bg-white flex-col">
       <div className="flex-1 p-6">
+        {/* Header */}
         <div className="mb-6">
-          <h1 className="text-3xl font-bold">Welcome Instractor {user.username},</h1>
-          
+          <h1 className="text-4xl font-thin">
+            Welcome Instructor {user?.username},
+          </h1>
         </div>
 
+        {/* Main Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left Column */}
+          {/* Left section */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Courses Progress */}
-            <div className="bg-white p-6 rounded-lg shadow-md mb-6">
+            <div className="bg-white p-6 rounded-lg border border-gray-300 mb-6 min-h-[400px]">
               <h2 className="text-lg font-semibold mb-4">Courses Progress</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {courseProgress.map((course, index) => (
+
+              {/* Stats Cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {stats.map(({ name, count, icon, link, bg, iconBg }) => (
+                  <Link
+                    key={name}
+                    className={`${bg} rounded-lg p-6 min-h-[140px] shadow-lg hover:shadow-2xl transition duration-300`}
+                  >
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <h2 className="text-lg font-semibold">{name}</h2>
+                        <p className="text-2xl font-bold">{count}</p>
+                      </div>
+                      <div className={`p-3 rounded-full ${iconBg} text-white`}>
+                        {icon}
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+                {user?.instractor?.Courses?.map((course, index) => (
                   <div key={index} className="flex flex-col items-center">
                     <div className="relative w-24 h-24">
                       <svg className="w-full h-full" viewBox="0 0 36 36">
@@ -145,173 +96,49 @@ const MyDashboard = () => {
                           fill="none"
                           stroke="#3B82F6"
                           strokeWidth="3"
-                          strokeDasharray={`${course.progress}, 100`}
+                          strokeDasharray={`${course.progress || 0}, 100`}
                         />
                       </svg>
                       <div className="absolute inset-0 flex items-center justify-center text-lg font-semibold">
-                        {course.progress}%
+                        {course.progress || 0}%
                       </div>
                     </div>
                     <p className="mt-2 text-sm font-medium">{course.name}</p>
-                    <p className="text-xs text-gray-500">{course.classes} Classes</p>
+                    <p className="text-xs text-gray-500">
+                      {course.classes || 0} Classes
+                    </p>
                   </div>
                 ))}
               </div>
             </div>
-
-            {/* What's Due */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <h3 className="text-lg font-semibold mb-4">What's Due</h3>
-              <p className="text-gray-500 text-sm mb-4">Browse you out and join to follow these:</p>
-              
-              <div className="overflow-x-auto">
-                <table className="min-w-full">
-                  <thead>
-                    <tr className="text-left text-sm font-medium text-gray-500">
-                      <th className="pb-2">Course | Topic</th>
-                      <th className="pb-2">Due Date</th>
-                      <th className="pb-2">Subm. Rate</th>
-                      <th className="pb-2">Status</th>
-                      <th className="pb-2">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {dueItems.map((item) => (
-                      <tr key={item.id} className="border-t">
-                        <td className="py-3">
-                          <span className="font-medium">{item.course}</span> | {item.topic}
-                        </td>
-                        <td className="py-3">{item.dueDate}</td>
-                        <td className="py-3">{item.submissionRate} %</td>
-                        <td className="py-3">
-                          <span className={`px-2 py-1 rounded text-xs ${
-                            item.status.includes('Waiting') ? 'bg-yellow-100 text-yellow-800' :
-                            item.status.includes('Ready') ? 'bg-blue-100 text-blue-800' :
-                            'bg-green-100 text-green-800'
-                          }`}>
-                            {item.status}
-                          </span>
-                        </td>
-                        <td className="py-3">
-                          <button className="text-blue-500 hover:text-blue-700 text-sm">
-                            View
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            {/* Latest Uploaded Files */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <h3 className="text-lg font-semibold mb-4">Latest Uploaded Files</h3>
-              <p className="text-gray-500 text-sm mb-4">All videos are used in order to follow these:</p>
-              
-              <div className="overflow-x-auto">
-                <table className="min-w-full">
-                  <thead>
-                    <tr className="text-left text-sm font-medium text-gray-500">
-                      <th className="pb-2">File</th>
-                      <th className="pb-2">Course | Topic</th>
-                      <th className="pb-2">Date</th>
-                      <th className="pb-2">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {uploadedFiles.map((file) => (
-                      <tr key={file.id} className="border-t">
-                        <td className="py-3 font-medium">{file.name}</td>
-                        <td className="py-3">
-                          <span className="font-medium">{file.course}</span> | {file.topic}
-                        </td>
-                        <td className="py-3">{file.date}</td>
-                        <td className="py-3">
-                          <div className="flex flex-wrap gap-1 max-w-xs">
-                            {file.categories.map((cat, idx) => (
-                              <span key={idx} className="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">
-                                {cat}
-                              </span>
-                            ))}
-                            {file.grade && (
-                              <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">
-                                Aug Grade: {file.grade}
-                              </span>
-                            )}
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
           </div>
 
-          {/* Right Column */}
           <div className="space-y-6">
-            {/* Announcements */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <h3 className="text-lg font-semibold mb-4">Announcements</h3>
-              <p className="text-gray-500 text-sm mb-4">All videos are used in order to follow these:</p>
-              
-              <ul className="space-y-3">
-                {announcements.map((announcement, index) => (
-                  <li key={index}>
-                    {typeof announcement === 'string' ? (
-                      <span className="font-bold">{announcement}</span>
-                    ) : (
-                      <div>
-                        <span className="font-medium">Course: {announcement.course}</span>
-                        <span className="ml-2 text-sm bg-gray-100 px-2 py-1 rounded">
-                          {announcement.category}
-                        </span>
-                      </div>
-                    )}
+            <div className="announcement-component border border-gray-300 bg-white max-w-x5 p-6 rounded-lg mb-6 min-h-[400px] overflow-y-auto">
+              <h3 className="text-lg font-semibold mb-2">
+                Latest Announcements
+              </h3>
+              <ul>
+                {announcements?.map((announcement, index) => (
+                  <li key={index} className="mb-4">
+                    <p className="text-sm text-gray-500">
+                      {announcement.createdAt}
+                    </p>
+                    <p className="font-medium">E-learning Administrator</p>
+                    <p className="text-blue-600 hover:underline">
+                      {announcement.title}
+                    </p>
                   </li>
                 ))}
               </ul>
+              
             </div>
+          </div>
+        </div>
 
-            {/* Today's Schedule */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <h3 className="text-lg font-semibold mb-4">Today Schedule</h3>
-              <p className="text-gray-500 text-sm mb-4">There is no phone or phone at board.</p>
-              
-              <ul className="space-y-4">
-                {schedule.map((item) => (
-                  <li key={item.id} className="border-l-4 border-blue-500 pl-4">
-                    <h4 className="font-bold">{item.slot}</h4>
-                    <div className="mt-1">
-                      <p className="text-sm">Course: {item.course}</p>
-                      <p className="text-sm">Topic: {item.topic}</p>
-                      <p className="text-sm">Place: {item.place}</p>
-                    </div>
-                  </li>
-                ))}
-                <li className="pt-4 italic text-gray-500">Your day ends here a Enjoy your day.</li>
-              </ul>
-            </div>
-
-            {/* Latest Grades */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <h3 className="text-lg font-semibold mb-4">Latest Grades</h3>
-              <p className="text-gray-500 text-sm mb-4">Listen here to credit, not to copy.</p>
-              
-              <ul className="space-y-4">
-                {grades.map((grade) => (
-                  <li key={grade.id} className="border-t pt-4 first:border-t-0 first:pt-0">
-                    <h4 className="font-bold">{grade.type}</h4>
-                    <div className="mt-1">
-                      <p className="text-sm">Course: {grade.course}</p>
-                      <p className="text-sm">Category: {grade.category}</p>
-                      <p className="text-sm">Aug Grade: {grade.grade}</p>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
+        <div className="mt-10 flex">
+          <div className="bg-white p-6 border border-gray-300 rounded-lg mb-6">
+            <SiteNews />
           </div>
         </div>
       </div>

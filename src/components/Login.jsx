@@ -46,7 +46,7 @@ const Login = () => {
                 if (response.role === 'ADMIN') {
                     navigate("/AdminDashboard");
                 } else if (response.user.role === 'INSTRUCTOR') {
-                    navigate("/InstractorDashboard");
+                    navigate("/InstractorDashboard", { state: { user: response.user } });
                 } else {
                     navigate("/");
                 }
@@ -58,11 +58,10 @@ const Login = () => {
     };
 
     return (
-        <div className="min-h-screen flex">
-            
-            <div className=" p-0 flex justify-end ">
-                <div className="bg-white p-4 rounded-lg shadow-md w-66 border-gray-700 mt-0">
-                    <h2 className="text-2xl font-semibold mb-4">Login</h2>
+        <div >
+        
+            <div className='flex justify-center items-center  bg-white'>
+                <div className="bg-white p-4 rounded-lg shadow-md w-66 border-gray-700 mt-0 ">
                     {error&& <div className="alert alert-danger">{error}</div>}
                     <form onSubmit={handleSubmit}>
                         <div className="mb-4">
@@ -111,15 +110,8 @@ const Login = () => {
                                 Log in
                             </button>
                         </div>
-                        <div className="mb-4 text-center">
-                            <a href="#" className="text-blue-500 hover:underline">Lost password?</a>
-                        </div>
-                        <div>
-                            <p className="text-center text-gray-700 mb-2">Or log in using your account on:</p>
-                            <button className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-gray-300">
-                                Login As Admin
-                            </button>
-                        </div> 
+                        
+                    
                         
                     </form>
                 </div>

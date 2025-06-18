@@ -5,19 +5,17 @@ const SubHeader = ({ isLoggedIn, user }) => {
   const pathSegments = location.pathname.split("/").filter(Boolean);
 
   const filteredSegments = pathSegments.filter(segment => {
-    // Filter out UUIDs (36-char segments with dashes) or numbers
     return !/^[0-9a-fA-F-]{36}$/.test(segment) && isNaN(Number(segment));
   });
 
   const getBreadcrumbName = (segment) => {
-    if (segment === "course") return "Course";
-    if (segment === "ContentDetail") return "Course Detail";
+    if (segment === "course") return "course";
+    if (segment === "ContentDetail") return "Course-detail";
+    if (segment === "course") return "Course Detail";
     return segment.charAt(0).toUpperCase() + segment.slice(1);
   };
 
-  // Define existing routes (that are safe to navigate to)
-  const knownRoutes = ["/", "/course"]; // Add more if needed
-
+  const knownRoutes = ["/", "/course"]; 
   return (
     <div className="bg-white py-10 border-t border-gray-700">
       <div className="container mx-auto">
